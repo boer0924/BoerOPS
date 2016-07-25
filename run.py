@@ -1,5 +1,7 @@
-from app import app
+from app import create_app
+# from config import config
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=9090, debug=True)
+    app = create_app('dev')
+    app.run()
 

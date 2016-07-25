@@ -1,18 +1,30 @@
-from flask import Flask, render_template
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+from flask_mail import Mail
+from config import config
 
 app = Flask(__name__)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+db = SQLAlchemy()
+login_manager = LoginManager()
+mail = Mail()
 
-@app.route('/deploy')
-def deploy():
-    return render_template('deploy.html')
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
 
-@app.route('/project')
-def project():
-    return render_template('project.html')
+    db.init_app(app)
+    login_manager.init_app(app)
+    mail.init_app(app)
+
+    from .main import main as main_blueprint
+    app.register_blueprint(main_blueprint)
+    from .auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint)
+
+    return app
 
 @app.route('/user')
 def user():

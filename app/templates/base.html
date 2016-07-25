@@ -45,10 +45,10 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" class="active"><a href="{{ url_for('index') }}">Home</a></li>
-                    <li role="presentation"><a href="{{ url_for('deploy') }}">Deploy</a></li>
-                    <li role="presentation"><a href="{{ url_for('project') }}">Project</a></li>
-                    <li role="presentation"><a href="{{ url_for('user') }}">User</a></li>
+                    <li role="presentation" class="active"><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li role="presentation"><a href="{{ url_for('main.deploy') }}">Deploy</a></li>
+                    <li role="presentation"><a href="{{ url_for('main.project') }}">Project</a></li>
+                    <li role="presentation"><a href="{{ url_for('auth.user') }}">User</a></li>
                 </ul>
             </div>
         </div>
