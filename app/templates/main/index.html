@@ -19,7 +19,32 @@
         <!--<li><a href="{{ url_for('auth.user') }}">User</a></li>-->
         <li class="active">Home</li>
     </ol>
-
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Branch</th>
+                    <th>Time</th>
+                    <th>User</th>
+                    <th>State</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>onenet</td>
+                    <td>develop</td>
+                    <td>2016/07/26-22:01:56</td>
+                    <td>zhanghaibo</td>
+                    <td>success</td>
+                    <td>
+                        <a role="button" class="btn btn-default btn-xs" href="#">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}
