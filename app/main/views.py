@@ -1,5 +1,7 @@
 from . import main
 from flask import render_template
+from .forms import ProjectForm, DeployForm, RollbackForm
+
 
 @main.route('/')
 def index():
@@ -8,7 +10,16 @@ def index():
 
 @main.route('/deploy')
 def deploy():
-    return render_template('main/deploy.html')
+    form = DeployForm()
+    form.project.choices = []
+    return render_template('main/deploy.html', form=form)
+
+
+@main.route('/rollback')
+def rollback():
+    form = RollbackForm()
+    form.project.choices = []
+    return render_template('main/project/rollback.html', form=form)
 
 
 @main.route('/project')
@@ -18,4 +29,5 @@ def project():
 
 @main.route('/project/add', methods=['GET', 'POST'])
 def project_add():
-    return render_template('main/project/add.html')
+    form = ProjectForm()
+    return render_template('main/project/add.html', form=form)

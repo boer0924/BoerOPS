@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-2 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation"><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li role="presentation"><a href="{{ url_for('main.deploy') }}">Deploy</a></li>
+                    <li role="presentation"><a href="{{ url_for('main.project') }}">Project</a></li>
+                    <li role="presentation" class="active"><a href="{{ url_for('auth.user') }}">User</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 col-xs-12">
+    <ol class="breadcrumb">
+        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+        <li><a href="{{ url_for('auth.user') }}">User</a></li>
+        <li class="active">add</li>
+    </ol>
+    <form class="form-horizontal">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Username</label>
+            <div class="col-sm-4">
+                {{ form.username(class="form-control", placeholder="Username") }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">E-Mail</label>
+            <div class="col-sm-4">
+                {{ form.email(class="form-control", placeholder="E-Mail") }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Password</label>
+            <div class="col-sm-4">
+                {{ form.password(class="form-control", placeholder="Password") }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Confirm Password</label>
+            <div class="col-sm-4">
+                {{ form.confirm(class="form-control", placeholder="Confirm Password") }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Name</label>
+            <div class="col-sm-4">
+                {{ form.name(class="form-control", placeholder="Your Name") }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Job</label>
+            <div class="col-sm-4">
+                {{ form.job(class="form-control", placeholder="Your Job") }}
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Phone</label>
+            <div class="col-sm-4">
+                {{ form.phone(class="form-control", placeholder="Your Phone") }}
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-4">
+                <button type="submit" class="btn btn-success">Create</button>
+            </div>
+        </div>
+
+    </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,21 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Count</th>
-            <th>Name</th>
-            <th>Git_URL</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th>0</th>
-            <td>onenet_v3</td>
-            <td>git@gitlab.onenet.com/limao/onenet_v3.git</td>
-            <td><button type="button" class="btn btn-primary btn-xs">deploy</button></td>
-        </tr>
-    </tbody>
-</table>
+<div class="row">
+    <div class="col-md-2 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active"><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li role="presentation"><a href="{{ url_for('main.deploy') }}">Deploy</a></li>
+                    <li role="presentation"><a href="{{ url_for('main.project') }}">Project</a></li>
+                    <li role="presentation"><a href="{{ url_for('auth.user') }}">User</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-10 col-xs-12">
+    <ol class="breadcrumb">
+        <!--<li><a href="{{ url_for('main.index') }}">Home</a></li>-->
+        <!--<li><a href="{{ url_for('auth.user') }}">User</a></li>-->
+        <li class="active">Home</li>
+    </ol>
+
+    </div>
+</div>
 {% endblock %}

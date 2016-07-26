@@ -1,47 +1,75 @@
 {% extends 'base.html' %}
 {% block content %}
-<form class="form-horizontal">
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Project Name</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Project Name">
+<div class="row">
+    <div class="col-md-2 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation"><a href="{{ url_for('main.index') }}">Home</a></li>
+                    <li role="presentation"><a href="{{ url_for('main.deploy') }}">Deploy</a></li>
+                    <li role="presentation" class="active"><a href="{{ url_for('main.project') }}">Project</a></li>
+                    <li role="presentation"><a href="{{ url_for('auth.user') }}">User</a></li>
+                </ul>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Git URL</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Git URL">
+    <div class="col-md-10 col-xs-12">
+    <ol class="breadcrumb">
+        <li><a href="{{ url_for('main.index') }}">Home</a></li>
+        <li><a href="{{ url_for('main.project') }}">Project</a></li>
+        <li class="active">add</li>
+    </ol>
+    <form class="form-horizontal">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Project Name</label>
+            <div class="col-sm-8">
+                {{ form.name(class="form-control", placeholder="Project Name") }}
+                <!--<input type="text" class="form-control" placeholder="Project Name">-->
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Local Path</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Local Path">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Git URL</label>
+            <div class="col-sm-8">
+                {{ form.git_url(class="form-control", placeholder="Git URL") }}
+                <!--<input type="text" class="form-control" placeholder="Git URL">-->
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Build Path</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Build Path">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Git Path</label>
+            <div class="col-sm-8">
+                {{ form.git_path(class="form-control", placeholder="Git Path") }}
+                <!--<input type="text" class="form-control" placeholde"Git Path">-->
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Package Path</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Package Path">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Build Path</label>
+            <div class="col-sm-8">
+                {{ form.build_path(class="form-control", placeholder="Build Path") }}
+                <!--<input type="text" class="form-control" placeholder="Build Path">-->
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">Prod Path</label>
-        <div class="col-sm-8">
-            <input type="text" class="form-control" placeholder="Production Path">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Package Path</label>
+            <div class="col-sm-8">
+                {{ form.package_path(class="form-control", placeholder="Package Path") }}
+                <!--<input type="text" class="form-control" placeholder="Package Path">-->
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-8">
-            <button type="submit" class="btn btn-success">Save</button>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Prod Path</label>
+            <div class="col-sm-8">
+                {{ form.prod_path(class="form-control", placeholder="Production Path") }}
+                <!--<input type="text" class="form-control" placeholder="Production Path">-->
+            </div>
         </div>
-    </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-8">
+                <button type="submit" class="btn btn-success">Save</button>
+            </div>
+        </div>
 
-</form>
+    </form>
+    </div>
+</div>
 {% endblock %}

@@ -8,14 +8,14 @@
     <link href="http://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap-theme.css" rel="stylesheet">
     <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.js"></script>
     <script src="http://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.js"></script>
-    <script type="text/javascript">
-        $(function() {
-            $('.panel-body ul li').on('click', function() {
-                $(this).addClass('active').siblings().removeClass('active');
-                $('.well-sm').html($(this).html());
-            });
-        });
-    </script>
+    <!--<script type="text/javascript">-->
+        <!--$(function() {-->
+            <!--$('.panel-body ul li').on('click', function() {-->
+                <!--$(this).addClass('active').siblings().removeClass('active');-->
+                <!--$('.well-sm').html($(this).html());-->
+            <!--});-->
+        <!--});-->
+    <!--</script>-->
 </head>
 <body>
 <div class="container header">
@@ -40,26 +40,11 @@
 </div>
 <hr>
 <div class="container">
-<div class="row">
-    <div class="col-md-2 col-xs-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" class="active"><a href="{{ url_for('main.index') }}">Home</a></li>
-                    <li role="presentation"><a href="{{ url_for('main.deploy') }}">Deploy</a></li>
-                    <li role="presentation"><a href="{{ url_for('main.project') }}">Project</a></li>
-                    <li role="presentation"><a href="{{ url_for('auth.user') }}">User</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-10 col-xs-12">
-    <div class="well well-sm">
-        <a id="sub-nav" href="#">Home</a>
+    <div class="alert alert-info alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Information!</strong> Better check yourself, you're not looking too good.
     </div>
     {% block content %}{% endblock %}
-    </div>
-</div>
 </div>
 </body>
 </html>
