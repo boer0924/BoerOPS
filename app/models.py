@@ -33,7 +33,6 @@ class User(UserMixin, db.Model):
     def verify_password(self, pwd):
         return check_password_hash(self.password, pwd)
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
