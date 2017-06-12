@@ -6,9 +6,23 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage', 'upload'], 
     var form = layui.form();
     var layedit = layui.layedit;
     var laypage = layui.laypage;
+
+    // 文件上传
+    layui.upload({
+        url: '/projects/uploads',
+        type: 'file',
+        ext: 'yaml|yml|txt',
+        success: function (res, input) {
+            console.log(res.filepath);
+            var playbook = res.filepath;
+        }
+    });
+
     // 添加项目表单提交
     form.on('submit(addProject)', function(data) {
+        data.playbook = playbook;
         layer.msg(JSON.stringify(data.field));
+
         $.ajax({
             type: 'POST',
             url: '/projects/',
@@ -37,16 +51,6 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage', 'upload'], 
             }
         });
         return false;
-    });
-
-    // 文件上传
-    layui.upload({
-        url: '/projects/',
-        type: 'file',
-        ext: 'yaml|yml|txt',
-        success: function (res, input) {
-            console.log(res.filepath);
-        }
     });
 
     // 添加项目弹出层

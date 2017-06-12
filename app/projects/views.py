@@ -1,18 +1,19 @@
+#!/usr/local/env python
+# -*- coding: utf-8 -*-
+
 from . import projects
+from ..utils.uploads import upload_file
+
 from flask import render_template, request, jsonify
 
-
-@projects.route('/', methods=['POST'])
-def upload():
-    if request.method == 'POST':
-        return jsonify(filepath='/var/www/v3.yml')
-
+@projects.route('/uploads', methods=['GET', 'POST'])
+def uploads():
+    return upload_file()
 
 @projects.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        print(request.values)
-        # print(request.form.get('playbook'))
+        print(request.form)
     return render_template('projects/index.html')
 
 @projects.route('/hosts', methods=['GET', 'POST'])
