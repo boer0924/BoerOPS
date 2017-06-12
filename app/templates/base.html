@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>layout后台布局 - Layui</title>
     <link rel="stylesheet" href="/static/layui/css/layui.css">
     <link rel="stylesheet" href="/static/layui/css/global.css">
+    {% endblock %}
     <style>
         .boer-logo {
             font-size: 20px;
@@ -33,6 +35,8 @@
         }
     </style>
 </head>
+
+{% block layer %}
 <div class="layui-tab-item" id="reset-pass-ctx">
     <form class="layui-form boer-layer-form" action="">
         <div class="layui-form-item boer-layer-item">
@@ -55,40 +59,14 @@
         </div>
         <div class="layui-form-item boer-layer-item">
             <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">立即更改</button>
+                <button class="layui-btn" lay-submit lay-filter="resetPassword">立即更改</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
             </div>
         </div>
     </form>
 </div>
-<div class="layui-tab-item" id="publish-ctx">
-    <form class="layui-form boer-layer-form" action="">
-        <div class="layui-form-item boer-layer-item">
-            <label class="layui-form-label">标题</label>
-            <div class="layui-input-block">
-                <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item boer-layer-item">
-            <label class="layui-form-label">显/隐</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="switch" lay-skin="switch">
-            </div>
-        </div>
-        <div class="layui-form-item boer-layer-item">
-            <label class="layui-form-label">内容</label>                                
-            <div class="layui-input-block">                                                            
-                <textarea id="demo" style="display: none;" class="layui-textarea"></textarea>
-            </div>
-        </div>
-        <div class="layui-form-item boer-layer-item">
-            <div class="layui-input-block">
-                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-            </div>
-        </div>
-    </form>
-</div>
+{% endblock %}
+
 <body>
     <div class="layui-layout layui-layout-admin">
         <div class="layui-header header header-demo">
@@ -98,20 +76,6 @@
                     <!--<img src="https://www.baidu.com/img/bd_logo1.png" alt="">-->
                     <span class="boer-logo">BoerOPS</span>
                 </a>
-                <div class="layui-form component">
-                    <select lay-search="" lay-filter="component">
-                        <option value="">搜索组件或模块</option>
-                    </select>
-                    <div class="layui-unselect layui-form-select">
-                        <div class="layui-select-title">
-                            <input type="text" placeholder="搜索组件或模块" value="" class="layui-input layui-unselect">
-                            <i class="layui-edge"></i>
-                        </div>
-                        <dl class="layui-anim layui-anim-upbit">
-                            <dd lay-value="element/color.html" class="">color 颜色</dd>
-                        </dl>
-                    </div>
-                </div>
                 <ul class="layui-nav" lay-filter="">
                     <!--<li class="layui-nav-item"><a href="">最新活动</a></li>
                     <li class="layui-nav-item layui-this"><a href="">产品</a></li>
@@ -132,319 +96,50 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
                 <ul class="layui-nav layui-nav-tree" lay-filter="test">
                 <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+                    <li class="layui-nav-item"><a href="">Dashboard</a></li>
+                    
                     <li class="layui-nav-item layui-nav-itemed">
-                        <a href="javascript:;">内容管理</a>
+                        <a href="javascript:;">项目管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="javascript:;">新闻动态</a></dd>
-                            <dd><a href="javascript:;">最新公告</a></dd>
+                            <dd><a href="/projects">项目组</a></dd>
+                            <dd><a href="/projects/hosts">主机</a></dd>                            
+                            <dd><a href="/projects/deploy">发布部署</a></dd>
                         </dl>
                     </li>
                     <li class="layui-nav-item">
-                        <a href="javascript:;">产品管理</a>
+                        <a href="javascript:;">权限管理</a>
                         <dl class="layui-nav-child">
-                            <dd><a href="">产品分类</a></dd>
-                            <dd><a href="">产品管理</a></dd>
+                            <dd><a href="">用户组</a></dd>                            
+                            <dd><a href="">超级用户</a></dd>
+                            <dd><a href="">普通用户</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item"><a href="">会员管理</a></li>
-                    <li class="layui-nav-item"><a href="">用户管理</a></li>
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a href="javascript:;">第三方系统</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="javascript:;">Gitlab代码托管</a></dd>
+                            <dd><a href="javascript:;">Zabbix监控报警</a></dd>
+                            <dd><a href="javascript:;">ELK Stack日志分析</a></dd>
+                        </dl>
+                    </li>
+                    
                 </ul>
             </div>
         </div>
         <div class="layui-body">
         <!-- 内容主体区域 -->
-        <blockquote class="layui-elem-quote">
-        <span class="layui-breadcrumb" lay-separator="/">
-            <a href="">首页</a>
-            <a href="">国际新闻</a>
-            <a href="">亚太地区</a>
-            <a><cite>正文</cite></a>
-        </span>
-        </blockquote>
-            <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-                <ul class="layui-tab-title">
-                    <li class="layui-this" lay-id="">网站设置</li>
-                    <li>用户管理</li>
-                    <li>权限分配</li>
-                    <li>商品管理</li>
-                    <li>订单管理</li>
-                </ul>
-                <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">
-                        <form class="layui-form" action="">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">输入框</label>
-                                <div class="layui-input-block">
-                                <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">密码框</label>
-                                <div class="layui-input-inline">
-                                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
-                                </div>
-                                <div class="layui-form-mid layui-word-aux">辅助文字</div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">选择框</label>
-                                <div class="layui-input-block">
-                                <select name="city" lay-verify="required">
-                                    <option value=""></option>
-                                    <option value="0">北京</option>
-                                    <option value="1">上海</option>
-                                    <option value="2">广州</option>
-                                    <option value="3">深圳</option>
-                                    <option value="4">杭州</option>
-                                </select>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">复选框</label>
-                                <div class="layui-input-block">
-                                    <input type="checkbox" name="like[write]" title="写作">
-                                    <input type="checkbox" name="like[read]" title="阅读" checked>
-                                    <input type="checkbox" name="like[dai]" title="发呆">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">开关</label>
-                                <div class="layui-input-block">
-                                    <input type="checkbox" name="switch" lay-skin="switch">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">单选框</label>
-                                <div class="layui-input-block">
-                                    <input type="radio" name="sex" value="男" title="男">
-                                    <input type="radio" name="sex" value="女" title="女" checked>
-                                </div>
-                            </div>
-                            <div class="layui-form-item layui-form-text">
-                                <label class="layui-form-label">文本域</label>
-                                <div class="layui-input-block">
-                                    <textarea name="desc" placeholder="请输入内容" class="layui-textarea"></textarea>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-input-block">
-                                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="layui-tab-item">
-                        <form class="layui-form" action="">
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">标题</label>
-                                <div class="layui-input-block">
-                                    <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">显/隐</label>
-                                <div class="layui-input-block">
-                                    <input type="checkbox" name="switch" lay-skin="switch">
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <label class="layui-form-label">内容</label>                                
-                                <div class="layui-input-block">                                                            
-                                    <textarea id="demo1" style="display: none;" class="layui-textarea"></textarea>
-                                </div>
-                            </div>
-                            <div class="layui-form-item">
-                                <div class="layui-input-block">
-                                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
-                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="layui-tab-item">
-                        <blockquote class="layui-elem-quote layui-quote-nm">
-                            <div class="layui-form boer-element-inline">
-                                    <button id="publish-btn" class="layui-btn"><i class="layui-icon">&#xe61f;</i> 发布新闻动态</button>                                                                                                     
-                            </div> 
-                            <form class="layui-form boer-element-inline boer-element-right" action="">
-                                    <input type="text" name="search" placeholder="搜索内容" class="layui-input boer-input-search">
-                                    <button class="layui-btn"><i class="layui-icon">&#xe615;</i> 搜索</button>                                                                 
-                            </form>                            
-                        </blockquote>
-                        <form class="layui-form">
-                            <table class="layui-table" lay-skin="line">
-                                <colgroup>
-                                    <col width="10%">
-                                    <col width="40%">
-                                    <col>
-                                    <!--<col width="20%">
-                                    <col width="15%">
-                                    <col width="15%">-->
-                                </colgroup>
-                                <thead>
-                                    <tr>
-                                    <th>ID</th>
-                                    <th>标题</th>
-                                    <th>发布时间</th>
-                                    <th>显示/隐藏</th>
-                                    <th>操作</th>
-                                    </tr> 
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="news[]" title="1" lay-skin="primary">
-                                        </td>
-                                        <td>贤心</td>
-                                        <td>2016-11-29</td>
-                                        <td>
-                                            <input type="checkbox" name="switch" lay-skin="switch">
-                                        </td>
-                                        <td>
-                                            <div class="layui-btn-group">
-                                                <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
-                                                <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="news[]" title="2" lay-skin="primary">
-                                        </td>
-                                        <td>贤心</td>
-                                        <td>2016-11-29</td>
-                                        <td>
-                                            <input type="checkbox" name="switch" lay-skin="switch">
-                                        </td>
-                                        <td>
-                                            <div class="layui-btn-group">                                        
-                                                <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
-                                                <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" name="news[]" title="全选" lay-skin="primary" lay-filter="chk-all">
-                                        </td>
-                                        <td>
-                                            <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
-                                        </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td colspan="3">
-                                            <div id="page1"></div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </form>
-                    </div>
-                    <div class="layui-tab-item">4</div>
-                    <div class="layui-tab-item">5</div>
-                </div>
-            </div>     
+        {% block content %}{% endblock %}
         </div>
         <div class="layui-footer">
         <!-- 底部固定区域 -->
+        {% block footer %}
+        版权信息
+        {% endblock %}
         </div>
     </div>
+    {% block script %}
     <script src="/static/layui/layui.js"></script>
-    <script>
-    //JavaScript代码区域
-        layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function(){
-            var $ = layui.jquery;
-            var element = layui.element();
-            var layer = layui.layer;
-            var util = layui.util;
-            var form = layui.form();
-            var layedit = layui.layedit;
-            var laypage = layui.laypage;
-            // 返回顶部按钮
-            util.fixbar({
-                bar1: '&#xe60f;',
-                bgcolor: '#393D49',
-                click: function (type) {
-                    if (type==='bar1') {
-                        // layer.msg('top');
-                        $('.layui-side').slideToggle("slow");;
-                    }
-                }
-            });
-            // 表单提交
-            form.on('submit(formDemo)', function(data) {
-                layer.msg(JSON.stringify(data.field));
-                return false;
-            });
-            // 列表全部选择
-            form.on('checkbox(chk-all)', function (data) {
-                if (this.checked) {
-                    $('input[name="news[]"]').each(function () {
-                        this.checked = true;
-                    }) 
-                } else {
-                    $('input[name="news[]"]').each(function (index, element) {
-                        element.checked = false;
-                    }) 
-                }
-                form.render();
-            });
-            // 确认密码验证
-            form.verify({
-                sameas: function (value) {
-                    if ($('#new_pwd').val() !== value) {
-                        return '确认密码不匹配';
-                    }
-                }
-            });
-            // 富文本
-            layedit.build('demo1');
-            layedit.build('demo', {
-                height: 360,
-                uploadImage: {
-                    url: '',
-                    type: 'post'
-                }
-            });
-            // 分页配置
-            laypage({
-                cont: 'page1',
-                pages: 100,
-                groups: 5
-            });
-            // 重置密码弹出层
-            $('#reset-password').on('click', function () {
-                layer.open({
-                    type: 1,
-                    title: '修改密码',
-                    skin: 'layui-layer-molv',
-                    content: $('#reset-pass-ctx'),
-                    area: ['450px', '300px'],
-                    closeBtn: 1,
-                    // shadeClose: true,
-                });
-            });
-            // 添加内容弹出层
-            $('#publish-btn').on('click', function () {
-                layer.open({
-                    type: 1,
-                    title: '添加文章',
-                    skin: 'layui-layer-molv',
-                    content: $('#publish-ctx'),
-                    area: ['900px', '680px'],
-                    // area: 'auto',
-                    // maxWidth: '900px',
-                    closeBtn: 1,
-                    resize: true
-                    // shadeClose: true,
-                });
-            });
-        });
-    </script>
+    <script src="/static/js/base.js"></script>
+    {% endblock %}
 </body>
 </html>

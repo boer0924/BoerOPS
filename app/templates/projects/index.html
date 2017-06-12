@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% block layer %}
+{{ super() }}
+<div class="layui-tab-item" id="add-project-ctx">
+    <form class="layui-form boer-layer-form" action="">
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">项目名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="项目名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">Git仓库</label>
+            <div class="layui-input-block">
+                <input type="text" name="gitrepo" required  lay-verify="required" placeholder="Git仓库地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">检出目录</label>
+            <div class="layui-input-block">
+                <input type="text" name="checkoutdir" required  lay-verify="required" placeholder="源码检出目录" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">部署目录</label>
+            <div class="layui-input-block">
+                <input type="text" name="depolydir" required  lay-verify="required" placeholder="部署文件目录" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">编译命令</label>
+            <div class="layui-input-block">
+                <!--<input type="text" name="title" required  lay-verify="required" placeholder="编译命令" autocomplete="off" class="layui-input">-->
+                <textarea placeholder="编译命令" class="layui-textarea" name="compilecmd"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">PlayBook</label>
+            <div class="layui-input-block">
+                <input type="file" name="playbook" class="layui-upload-file">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addProject">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+{% block content %}
+<blockquote class="layui-elem-quote">
+<span class="layui-breadcrumb" lay-separator="/">
+    <a href="">首页</a>
+    <a><cite>项目列表</cite></a>
+</span>
+</blockquote>
+<blockquote class="layui-elem-quote layui-quote-nm">
+    <div class="layui-form boer-element-inline">
+            <button id="add-project-btn" class="layui-btn"><i class="layui-icon">&#xe61f;</i> 添加项目</button>                                                                                                     
+    </div> 
+    <form class="layui-form boer-element-inline boer-element-right" action="">
+            <input type="text" name="search" placeholder="搜索内容" class="layui-input boer-input-search">
+            <button class="layui-btn"><i class="layui-icon">&#xe615;</i> 搜索</button>                                                                 
+    </form>                            
+</blockquote>
+<form class="layui-form">
+    <table class="layui-table" lay-skin="line">
+        <colgroup>
+            <!--<col width="10%">
+            <col width="40%">
+            <col>-->
+            <!--<col width="20%">
+            <col width="15%">
+            <col width="15%">-->
+        </colgroup>
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>名称</th>
+            <th>git repo</th>
+            <th>源码检出目录</th>
+            <th>部署文件目录</th>
+            <th>生产目录</th>
+            <th>创建时间</th>
+            <th>操作</th>
+            </tr> 
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="1" lay-skin="primary">
+                </td>
+                <td>onenet_v3</td>
+                <td>git@gitlab.onenet.com:limao/onenet_v3.git</td>
+                <td>/data/deployment/gitrepo/onenet_v3</td>
+                <td>/data/deployment/deploydir/onenet_v3</td>
+                <td>/data/www/onenet_v3</td>
+                <td>2017-06-12 11:23</td>
+                <!--<td><input type="checkbox" name="switch" lay-skin="switch"></td>-->
+                <td>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
+                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="1" lay-skin="primary">
+                </td>
+                <td>onenet_v3</td>
+                <td>git@gitlab.onenet.com:limao/onenet_v3.git</td>
+                <td>/data/deployment/gitrepo/onenet_v3</td>
+                <td>/data/deployment/deploydir/onenet_v3</td>
+                <td>/data/www/onenet_v3</td>
+                <td>2017-06-12 11:23</td>
+                <!--<td><input type="checkbox" name="switch" lay-skin="switch"></td>-->
+                <td>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
+                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="全选" lay-skin="primary" lay-filter="chk-all">
+                </td>
+                <td>
+                    <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                </td>
+                <td colspan="6"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="6">
+                    <div id="page1"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script src="/static/js/projects/index.js"></script>
+{% endblock %}

@@ -8,7 +8,7 @@ def login():
 
 @auth.route('/user')
 def user():
-    return render_template('auth/user.html')
+    return render_template('auth/index.html')
 
 
 @auth.route('/reg', methods=['GET', 'POST'])

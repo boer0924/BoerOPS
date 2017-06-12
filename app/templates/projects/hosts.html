@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block layer %}
+{{ super() }}
+<div class="layui-tab-item" id="add-host-ctx">
+    <form class="layui-form boer-layer-form" action="">
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">主机名</label>
+            <div class="layui-input-block">
+                <input type="text" name="hostname" required  lay-verify="required" placeholder="主机名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">IP地址</label>
+            <div class="layui-input-block">
+                <input type="text" name="ipaddr" required  lay-verify="required" placeholder="IP地址" autocomplete="off" class="layui-input">                
+                <!--<input type="checkbox" name="switch" lay-skin="switch">-->
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">端口号</label>                                
+            <div class="layui-input-block">   
+                <input type="text" name="portnum" required  lay-verify="required" placeholder="端口号" autocomplete="off" class="layui-input">                                                                         
+                <!--<textarea id="demo" style="display: none;" class="layui-textarea"></textarea>-->
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" required  lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addHost">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<blockquote class="layui-elem-quote">
+<span class="layui-breadcrumb" lay-separator="/">
+    <a href="/">首页</a>
+    <a><cite>主机列表</cite></a>
+</span>
+</blockquote>
+<blockquote class="layui-elem-quote layui-quote-nm">
+    <div class="layui-form boer-element-inline">
+            <button id="add-host-btn" class="layui-btn"><i class="layui-icon">&#xe61f;</i> 添加主机</button>                                                                                                     
+    </div> 
+    <form class="layui-form boer-element-inline boer-element-right" action="">
+            <input type="text" name="search" placeholder="搜索内容" class="layui-input boer-input-search">
+            <button class="layui-btn"><i class="layui-icon">&#xe615;</i> 搜索</button>                                                                 
+    </form>                            
+</blockquote>
+<form class="layui-form">
+    <table class="layui-table" lay-skin="line">
+        <colgroup></colgroup>
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>主机名</th>
+            <th>IP</th>
+            <th></th>
+            <th>操作</th>
+            </tr> 
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="1" lay-skin="primary">
+                </td>
+                <td>贤心</td>
+                <td>2016-11-29</td>
+                <td>
+                    <input type="checkbox" name="switch" lay-skin="switch">
+                </td>
+                <td>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
+                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="2" lay-skin="primary">
+                </td>
+                <td>贤心</td>
+                <td>2016-11-29</td>
+                <td>
+                    <input type="checkbox" name="switch" lay-skin="switch">
+                </td>
+                <td>
+                    <div class="layui-btn-group">                                        
+                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
+                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="全选" lay-skin="primary" lay-filter="chk-all">
+                </td>
+                <td>
+                    <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="3">
+                    <div id="page1"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script src="/static/js/projects/hosts.js"></script>
+{% endblock %}
