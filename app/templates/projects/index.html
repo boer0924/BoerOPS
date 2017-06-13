@@ -2,7 +2,7 @@
 {% block layer %}
 {{ super() }}
 <div class="layui-tab-item" id="add-project-ctx">
-    <form class="layui-form boer-layer-form" action="">
+    <form class="layui-form boer-layer-form" action="/projects/" enctype="multipart/form-data" method="post">
         <div class="layui-form-item boer-layer-item">
             <label class="layui-form-label">项目名</label>
             <div class="layui-input-block">
@@ -38,6 +38,7 @@
             <label class="layui-form-label">PlayBook</label>
             <div class="layui-input-block">
                 <input type="file" name="playbook" class="layui-upload-file">
+                <input type="hidden" id="playbook" name="file">
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">

@@ -4,7 +4,6 @@ from flask_login import LoginManager
 from flask_mail import Mail
 from config import config
 
-# app = Flask(__name__)
 
 db = SQLAlchemy()
 login_manager = LoginManager()

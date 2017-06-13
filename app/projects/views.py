@@ -13,7 +13,13 @@ def uploads():
 @projects.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        print(request.form)
+        project_name = request.form.get('name')
+        git_repo = request.form.get('gitrepo')
+        checkout_dir = request.form.get('checkoutdir')
+        deploy_dir = request.form.get('deploydir')
+        compile_cmd = request.form.get('compilecmd')
+        playbook_path = request.form.get('file')
+        
     return render_template('projects/index.html')
 
 @projects.route('/hosts', methods=['GET', 'POST'])

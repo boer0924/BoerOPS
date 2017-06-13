@@ -13,14 +13,13 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage', 'upload'], 
         type: 'file',
         ext: 'yaml|yml|txt',
         success: function (res, input) {
-            console.log(res.filepath);
-            var playbook = res.filepath;
+            // console.log(res.filepath);
+            $('#playbook').val(res.filepath);
         }
     });
 
     // 添加项目表单提交
     form.on('submit(addProject)', function(data) {
-        data.playbook = playbook;
         layer.msg(JSON.stringify(data.field));
 
         $.ajax({
@@ -28,6 +27,7 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage', 'upload'], 
             url: '/projects/',
             data: data.field,
             dataType: 'json',
+            // contentType: false,
             processData: true,
             success: function (data, txtStatus, jqXHR) {
                 if (data.code === 200) {
@@ -40,6 +40,7 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage', 'upload'], 
                     function () {
                         location.href="/projects/";
                     });
+
                 } else {
                     layer.msg(data.msg, {
                         icon: 2,

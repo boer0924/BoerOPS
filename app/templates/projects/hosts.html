@@ -3,7 +3,7 @@
 {% block layer %}
 {{ super() }}
 <div class="layui-tab-item" id="add-host-ctx">
-    <form class="layui-form boer-layer-form" action="">
+    <form class="layui-form boer-layer-form" action="/projects/hosts" enctype="multipart/form-data" method="post">
         <div class="layui-form-item boer-layer-item">
             <label class="layui-form-label">主机名</label>
             <div class="layui-input-block">
