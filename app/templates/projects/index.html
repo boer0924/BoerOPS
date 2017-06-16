@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+{% block head %}
+{{ super() }}
+{% endblock %}
 {% block layer %}
 {{ super() }}
 <div class="layui-tab-item" id="add-project-ctx">
@@ -67,14 +70,10 @@
     </form>                            
 </blockquote>
 <form class="layui-form">
-    <table class="layui-table" lay-skin="line">
+    <table class="layui-table reset-layui-table" lay-skin="line" style="word-wrap:break-word; word-break:break-all;">
         <colgroup>
-            <!--<col width="10%">
-            <col width="40%">
-            <col>-->
-            <!--<col width="20%">
-            <col width="15%">
-            <col width="15%">-->
+            <col width="102">
+            <col>
         </colgroup>
         <thead>
             <tr>
@@ -99,7 +98,6 @@
                 <td>/data/deployment/deploydir/onenet_v3</td>
                 <td>/data/www/onenet_v3</td>
                 <td>2017-06-12 11:23</td>
-                <!--<td><input type="checkbox" name="switch" lay-skin="switch"></td>-->
                 <td>
                     <div class="layui-btn-group">
                         <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
@@ -111,13 +109,12 @@
                 <td>
                     <input type="checkbox" name="items[]" title="1" lay-skin="primary">
                 </td>
-                <td>onenet_v3</td>
-                <td>git@gitlab.onenet.com:limao/onenet_v3.git</td>
-                <td>/data/deployment/gitrepo/onenet_v3</td>
-                <td>/data/deployment/deploydir/onenet_v3</td>
-                <td>/data/www/onenet_v3</td>
-                <td>2017-06-12 11:23</td>
-                <!--<td><input type="checkbox" name="switch" lay-skin="switch"></td>-->
+                <td><span class="reset-td">onenet_v3</span></td>
+                <td><span class="reset-td">git@gitlab.onenet.com:limao/onenet_v3.git</span></td>
+                <td><span class="reset-td">/data/deployment/gitrepo/onenet_v3</span></td>
+                <td><span class="reset-td">/data/deployment/deploydir/onenet_v3</span></td>
+                <td><span class="reset-td">/data/www/onenet_v3</span></td>
+                <td><span class="reset-td">2017-06-12 11:23</span></td>
                 <td>
                     <div class="layui-btn-group">
                         <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
@@ -144,6 +141,56 @@
         </tbody>
     </table>
 </form>
+<!--<table class="layui-table" style="word-wrap:break-word; word-break:break-all;">
+    <colgroup>
+        <col width="150">
+        <col width="200">
+        <col>
+    </colgroup>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>名称</th>
+        <th>git repo</th>
+        <th>源码检出目录</th>
+        <th>部署文件目录</th>
+        <th>生产目录</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            <input type="checkbox" name="items[]" title="1" lay-skin="primary">
+            <div class="layui-unselect layui-form-checkbox" lay-skin="primary"><span>1</span><i class="layui-icon"></i></div>
+        </td>
+        <td>onenet_v3</td>
+        <td>git@gitlab.onenet.com:limao/onenet_v3.git</td>
+        <td>/data/deployment/gitrepo/onenet_v3</td>
+        <td>/data/deployment/deploydir/onenet_v3</td>
+        <td>/data/www/onenet_v3</td>
+        <td>2017-06-12 11:23</td>
+        &lt;!&ndash;<td><input type="checkbox" name="switch" lay-skin="switch"></td>&ndash;&gt;
+        <td>
+            <div class="layui-btn-group">
+                <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
+                <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td>贤心</td>
+        <td>2016-11-29</td>
+        <td>人生就像是一场修行</td>
+        <td>2016-11-29</td>
+        <td>人生就像是一场修行</td>
+        <td>人生就像是一场修行</td>
+        <td>2016-11-29</td>
+        <td>人生就像是一场修行</td>
+    </tr>
+    </tbody>
+</table>-->
 {% endblock %}
 {% block script %}
 {{ super() }}
