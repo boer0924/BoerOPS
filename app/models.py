@@ -6,14 +6,16 @@ class Permissions(db.Model):
     __tablename__ = 'permissions'
 
     id = db.Column(db.Integer, index=True, primary_key=True)    
-
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
 class Roles(db.Model):
     __tablename__ = 'roles'
 
     id = db.Column(db.Integer, index=True, primary_key=True)
     name = db.Column(db.String(64), unique=True)
-    users = db.relationship('User', backref='role', lazy='dynamic')
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
     def __repr__(self):
         return '<Role %r>' % self.name
@@ -59,8 +61,8 @@ class Projects(db.Model):
     deploy_dir = db.Column(db.String(128))
     compile_cmd = db.Column(db.String(512))
     playbook_path = db.Column(db.String(128))
-    created_at = db.Column(db.Integer)
-    updated_at = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
 
 class Hosts(db.Model):
@@ -74,5 +76,5 @@ class Hosts(db.Model):
     password = db.Column(db.String(128))
     ssh_method = db.Column(db.Integer)
     project_id = db.Column(db.Integer)
-    created_at = db.Column(db.Integer)
-    updated_at = db.Column(db.Integer)
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
