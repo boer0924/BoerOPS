@@ -11,7 +11,7 @@ class Config(object):
 
 class DevelopmentConfig(Config):
     DEBUG = True
-    # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///' + os.path.join(bashdir, 'BoerOPS.db')
+    SQLALCHEMY_DATABASE_URI = 'mysql://root:123456@127.0.0.1:3306/boerops_dev'
 
 class ProductionConfig(Config):
     pass

@@ -3,7 +3,7 @@
 
 from . import projects
 from ..utils.uploads import upload_file
-from ..models import db, Projects, Hosts
+from ..models import db, Project, Host
 
 from flask import render_template, request, jsonify, current_app
 
@@ -21,15 +21,13 @@ def index():
         compile_cmd = request.form.get('compilecmd')
         playbook_path = request.form.get('file')
     
-        _p = Projects(
+        _p = Project(
             name = name,
             repo_url = repo_url,
             checkout_dir = checkout_dir,
             deploy_dir = deploy_dir,
             compile_cmd = compile_cmd,
             playbook_path = playbook_path,
-            created_at = int(time.time()),
-            updated_at = int(time.time())
         )
         db.session.add(_p)
         db.session.commit()
@@ -46,7 +44,6 @@ def hosts():
 
 @projects.route('/deploy')
 def deploy():
-    print('------>', current_app.root_path)
     return render_template('projects/deploy.html')
 
 

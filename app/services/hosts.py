@@ -1,9 +1,9 @@
 #!/usr/local/env python
 # -*- coding: utf-8 -*-
 
-from app.models import Hosts
+from app.models import Host
 
-class HostsService(Base):
-    __model__ = Hosts
+class HostService(Base):
+    __model__ = Host
 
-hosts = HostsService()
+hosts = HostService()

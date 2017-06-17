@@ -23,7 +23,7 @@ class Base(object):
         return self.session.query(self.__model__).filter_by(**kwargs).first()
 
     def get(self, id):
-        self.session.expire_all()
+        # self.session.expire_all()
         return self.session.query(self.__model__).get(id)
 
     def get_or_404(self, id):
