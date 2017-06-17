@@ -1,0 +1,35 @@
+
+version: '2'
+
+services:
+  deploy:
+    image: boerops:latest
+    container_name: boerops
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes: 
+      - ./:/data/www
+      - E:\projects\docker\common\etc\localtime:/etc/localtime:ro
+    working_dir: /data/www
+    links: 
+      - mysql:mysql
+    depends_on: 
+      - mysql
+    ports: 
+      - 8080:5000
+    command: python runserver.py
+  mysql:
+    container_name: mysql
+    image: mysql:5.7
+    environment: 
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=codeigniter
+      - MYSQL_USER=boer
+      - MYSQL_PASSWORD=123456
+    volumes: 
+      - E:\projects\docker\mysql\db:/var/lib/mysql
+      - E:\projects\docker\mysql\conf.d:/etc/mysql/conf.d
+      - E:\projects\docker\common\etc\localtime:/etc/localtime:ro
+    ports:
+      - 3306:3306
