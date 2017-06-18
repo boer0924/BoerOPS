@@ -28,7 +28,7 @@ class User(UserMixin, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True)
-    password = db.Column(db.String(64))
+    password_hash = db.Column(db.String(64))
     name = db.Column(db.String(64))
     job = db.Column(db.String(64))
     email = db.Column(db.String(64))
@@ -41,14 +41,14 @@ class User(UserMixin, db.Model):
 
     @property
     def password(self):
-        raise AttributeError('password is not a readable attr')
+        raise AttributeError('password is not a readable attribute')
     
     @password.setter
     def password(self, pwd):
-        self.password = generate_password_hash(pwd, salt_length=16)
+        self.password_hash = generate_password_hash(pwd, salt_length=16)
 
     def verify_password(self, pwd):
-        return check_password_hash(self.password, pwd)
+        return check_password_hash(self.password_hash, pwd)
 
     def __repr__(self):
         return '<%s %r>' % (self.__class__.__name__, self.name)

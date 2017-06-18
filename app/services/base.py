@@ -16,8 +16,9 @@ class Base(object):
         return record
 
     def find(self, **kwargs):
-        query = self.session.query(self.__model__).filter_by(**kwargs)
-        return query
+        # query = self.session.query(self.__model__).filter_by(**kwargs)
+        # return query
+        return self.__model__.query.filter_by(**kwargs)
 
     def first(self, **kwargs):
         return self.session.query(self.__model__).filter_by(**kwargs).first()
@@ -33,17 +34,18 @@ class Base(object):
         return self.session.query(self.__model__).filter_by(**kwargs).count()
 
     def all(self, offset=None, limit=None, order_by=None, desc=False):
-        query = self.session.query(self.__model__)
-        if order_by is not None:
-            if desc:
-                query = query.order_by(db.desc(order_by))
-            else:
-                query = query.order_by(order_by)
-        if offset is not None:
-            query = query.offset(offset)
-        if limit is not None:
-            query = query.limit(limit)
-        return query.all()
+        # query = self.session.query(self.__model__)
+        # if order_by is not None:
+        #     if desc:
+        #         query = query.order_by(db.desc(order_by))
+        #     else:
+        #         query = query.order_by(order_by)
+        # if offset is not None:
+        #     query = query.offset(offset)
+        # if limit is not None:
+        #     query = query.limit(limit)
+        # return query.all()
+        return self.__model__.query.all()
 
     def create(self, **kwargs):
         return self.save(self.__model__(**kwargs))

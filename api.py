@@ -99,3 +99,17 @@ try:
 finally:
     if tqm is not None:
         tqm.cleanup()
+
+# ipython shell
+# from app.models import User, Role, db
+
+# admin_role = Role(name='admin')
+# admin_user = User(username='boer', password='123', name='海博', job='Ops', role=admin_role)
+
+# from app import create_app
+
+# app = create_app('dev')
+# with app.app_context():
+#     db.session.add(admin_role)
+#     db.session.add(admin_user)
+#     db.session.commit()

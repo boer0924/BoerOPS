@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from . import projects
-from ..utils.uploads import upload_file
-from ..models import db, Project, Host
+from app.utils.uploads import upload_file
+from app.services.projects import projs
+from app.services.hosts import hosts
 
 from flask import render_template, request, jsonify, current_app
 
@@ -21,17 +22,7 @@ def index():
         compile_cmd = request.form.get('compilecmd')
         playbook_path = request.form.get('file')
     
-        _p = Project(
-            name = name,
-            repo_url = repo_url,
-            checkout_dir = checkout_dir,
-            deploy_dir = deploy_dir,
-            compile_cmd = compile_cmd,
-            playbook_path = playbook_path,
-        )
-        db.session.add(_p)
-        db.session.commit()
-
+        
     return render_template('projects/index.html')
 
 @projects.route('/hosts', methods=['GET', 'POST'])
