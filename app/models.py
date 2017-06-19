@@ -58,6 +58,15 @@ class User(UserMixin, db.Model):
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+rel_host_project = db.Table(
+    "rel_host_project",
+    db.Column("id", db.Integer, primary_key=True),
+    db.Column("host_id", db.Integer, db.ForeignKey("hosts.id")),
+    db.Column("project_id", db.Integer, db.ForeignKey("projects.id")),
+    db.Column("created_at", db.DateTime, default=db.func.now()),
+    db.Column("updated_at", db.DateTime, default=db.func.now(), onupdate=db.func.now()),
+)
+
 
 class Project(db.Model):
     __tablename__ = 'projects'
@@ -66,11 +75,14 @@ class Project(db.Model):
     name = db.Column(db.String(64), unique=True)
     repo_url = db.Column(db.String(128))
     checkout_dir = db.Column(db.String(128))
-    deploy_dir = db.Column(db.String(128))
+    compile_dir = db.Column(db.String(128))
     compile_cmd = db.Column(db.String(512))
     playbook_path = db.Column(db.String(128))
     created_at = db.Column(db.DateTime, default=db.func.now())
     updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
+    
+    hosts = db.relationship("Host", secondary=rel_host_project, 
+                            backref=db.backref("projects", lazy="dynamic"))
 
     def __repr__(self):
         return '<%s %r>' % (self.__class__.__name__, self.name)
@@ -86,7 +98,6 @@ class Host(db.Model):
     username = db.Column(db.String(32))
     password = db.Column(db.String(128))
     ssh_method = db.Column(db.Integer)
-    project_id = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=db.func.now())
     updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 

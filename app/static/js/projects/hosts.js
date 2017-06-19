@@ -9,7 +9,7 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
 
     // 表单提交
     form.on('submit(addHost)', function(data) {
-        layer.msg(JSON.stringify(data.field));
+        // layer.msg(JSON.stringify(data.field));
         $.ajax({
             type: 'POST',
             url: '/projects/hosts',

@@ -13,14 +13,14 @@
         <div class="layui-form-item boer-layer-item">
             <label class="layui-form-label">IP地址</label>
             <div class="layui-input-block">
-                <input type="text" name="ipaddr" required  lay-verify="required" placeholder="IP地址" autocomplete="off" class="layui-input">                
+                <input type="text" name="ip_address" required  lay-verify="required" placeholder="IP地址" autocomplete="off" class="layui-input">                
                 <!--<input type="checkbox" name="switch" lay-skin="switch">-->
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">
             <label class="layui-form-label">端口号</label>                                
             <div class="layui-input-block">   
-                <input type="text" name="portnum" required  lay-verify="required" placeholder="端口号" autocomplete="off" class="layui-input">                                                                         
+                <input type="text" name="ssh_port" required  lay-verify="required" placeholder="端口号" autocomplete="off" class="layui-input">                                                                         
                 <!--<textarea id="demo" style="display: none;" class="layui-textarea"></textarea>-->
             </div>
         </div>
@@ -63,21 +63,25 @@
             <tr>
             <th>ID</th>
             <th>主机名</th>
-            <th>IP</th>
-            <th></th>
+            <th>主机IP</th>
+            <th>SSH端口</th>
+            <th>用户名</th>
             <th>操作</th>
             </tr> 
         </thead>
         <tbody>
+            {% for host in hosts %}
             <tr>
                 <td>
-                    <input type="checkbox" name="items[]" title="1" lay-skin="primary">
+                    <input type="checkbox" name="items[]" title="{{ host.id }}" lay-skin="primary">
                 </td>
-                <td>贤心</td>
-                <td>2016-11-29</td>
-                <td>
+                <td>{{ host.hostname }}</td>
+                <td>{{ host.ip_address }}</td>
+                <td>{{ host.ssh_port }}</td>
+                <td>{{ host.username }}</td>
+                <!--<td>
                     <input type="checkbox" name="switch" lay-skin="switch">
-                </td>
+                </td>-->
                 <td>
                     <div class="layui-btn-group">
                         <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
@@ -85,22 +89,8 @@
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <input type="checkbox" name="items[]" title="2" lay-skin="primary">
-                </td>
-                <td>贤心</td>
-                <td>2016-11-29</td>
-                <td>
-                    <input type="checkbox" name="switch" lay-skin="switch">
-                </td>
-                <td>
-                    <div class="layui-btn-group">                                        
-                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
-                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
-                    </div>
-                </td>
-            </tr>
+            {% endfor %}
+        
             <tr>
                 <td>
                     <input type="checkbox" name="items[]" title="全选" lay-skin="primary" lay-filter="chk-all">
@@ -115,7 +105,7 @@
             <tr>
                 <td></td>
                 <td></td>
-                <td colspan="3">
+                <td colspan="4">
                     <div id="page1"></div>
                 </td>
             </tr>

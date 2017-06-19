@@ -4,6 +4,25 @@
 {% endblock %}
 {% block layer %}
 {{ super() }}
+<div class="layui-tab-item" id="bind-host-ctx">
+    <form class="layui-form boer-layer-form" method="post">
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">添加主机</label>
+            <div class="layui-input-block">
+                <input type="hidden" id="project_id" name="project_id">                
+                {% for host in hosts %}
+                <input type="checkbox" name="hosts[{{ host.id }}]" title="{{ host.ip_address }}">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="bindHost">绑定</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="layui-tab-item" id="add-project-ctx">
     <form class="layui-form boer-layer-form" action="/projects/" enctype="multipart/form-data" method="post">
         <div class="layui-form-item boer-layer-item">
@@ -15,33 +34,32 @@
         <div class="layui-form-item boer-layer-item">
             <label class="layui-form-label">Git仓库</label>
             <div class="layui-input-block">
-                <input type="text" name="gitrepo" required  lay-verify="required" placeholder="Git仓库地址" autocomplete="off" class="layui-input">
+                <input type="text" name="repo_url" required  lay-verify="required" placeholder="Git仓库地址" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">
             <label class="layui-form-label">检出目录</label>
             <div class="layui-input-block">
-                <input type="text" name="checkoutdir" required  lay-verify="required" placeholder="源码检出目录" autocomplete="off" class="layui-input">
+                <input type="text" name="checkout_dir" required  lay-verify="required" placeholder="源码检出目录" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">
-            <label class="layui-form-label">部署目录</label>
+            <label class="layui-form-label">编译目录</label>
             <div class="layui-input-block">
-                <input type="text" name="depolydir" required  lay-verify="required" placeholder="部署文件目录" autocomplete="off" class="layui-input">
+                <input type="text" name="compile_dir" required  lay-verify="required" placeholder="部署文件目录" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">
             <label class="layui-form-label">编译命令</label>
             <div class="layui-input-block">
-                <!--<input type="text" name="title" required  lay-verify="required" placeholder="编译命令" autocomplete="off" class="layui-input">-->
-                <textarea placeholder="编译命令" class="layui-textarea" name="compilecmd"></textarea>
+                <textarea placeholder="编译命令" class="layui-textarea" name="compile_cmd"></textarea>
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">
             <label class="layui-form-label">PlayBook</label>
             <div class="layui-input-block">
                 <input type="file" name="playbook" class="layui-upload-file">
-                <input type="hidden" id="playbook" name="file">
+                <input type="hidden" id="playbook" name="playbook_path">
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">
@@ -79,55 +97,46 @@
             <tr>
             <th>ID</th>
             <th>名称</th>
-            <th>git repo</th>
-            <th>源码检出目录</th>
-            <th>部署文件目录</th>
-            <th>生产目录</th>
+            <th>Git仓库</th>
+            <th>所属主机</th>
+            <th>编译命名</th>
+            <th>Playbook文件</th>
             <th>创建时间</th>
             <th>操作</th>
             </tr> 
         </thead>
         <tbody>
+
+            {% for project in projects %}
             <tr>
                 <td>
-                    <input type="checkbox" name="items[]" title="1" lay-skin="primary">
+                    <input type="checkbox" name="items[]" title="{{ project.id }}" lay-skin="primary" value="{{ project.id }}">
                 </td>
-                <td>onenet_v3</td>
-                <td>git@gitlab.onenet.com:limao/onenet_v3.git</td>
-                <td>/data/deployment/gitrepo/onenet_v3</td>
-                <td>/data/deployment/deploydir/onenet_v3</td>
-                <td>/data/www/onenet_v3</td>
-                <td>2017-06-12 11:23</td>
+                <td>{{ project.name }}</td>
+                <td>{{ project.repo_url }}</td>
+                <td>
+                    <div class="layui-btn-group">                    
+                        <button id="bind-host-btn" class="layui-btn layui-btn-mini"><i class="layui-icon">&#xe642;</i> 主机</button>
+                    </div>
+                </td>
+                <td>{{ project.compile_cmd }}</td>
+                <td>{{ project.playbook_path }}</td>
+                <td>{{ project.created_at }}</td>
                 <td>
                     <div class="layui-btn-group">
-                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
-                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                        <button id="update-project-btn" class="layui-btn layui-btn-mini"><i class="layui-icon">&#xe642;</i> 编辑</button>
+                        <button class="layui-btn layui-btn-mini layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <input type="checkbox" name="items[]" title="1" lay-skin="primary">
-                </td>
-                <td><span class="reset-td">onenet_v3</span></td>
-                <td><span class="reset-td">git@gitlab.onenet.com:limao/onenet_v3.git</span></td>
-                <td><span class="reset-td">/data/deployment/gitrepo/onenet_v3</span></td>
-                <td><span class="reset-td">/data/deployment/deploydir/onenet_v3</span></td>
-                <td><span class="reset-td">/data/www/onenet_v3</span></td>
-                <td><span class="reset-td">2017-06-12 11:23</span></td>
-                <td>
-                    <div class="layui-btn-group">
-                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
-                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
-                    </div>
-                </td>
-            </tr>
+            {% endfor %}
+            
             <tr>
                 <td>
                     <input type="checkbox" name="items[]" title="全选" lay-skin="primary" lay-filter="chk-all">
                 </td>
                 <td>
-                    <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                    <button class="layui-btn layui-btn-mini layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
                 </td>
                 <td colspan="6"></td>
             </tr>
@@ -141,56 +150,7 @@
         </tbody>
     </table>
 </form>
-<!--<table class="layui-table" style="word-wrap:break-word; word-break:break-all;">
-    <colgroup>
-        <col width="150">
-        <col width="200">
-        <col>
-    </colgroup>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>名称</th>
-        <th>git repo</th>
-        <th>源码检出目录</th>
-        <th>部署文件目录</th>
-        <th>生产目录</th>
-        <th>创建时间</th>
-        <th>操作</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>
-            <input type="checkbox" name="items[]" title="1" lay-skin="primary">
-            <div class="layui-unselect layui-form-checkbox" lay-skin="primary"><span>1</span><i class="layui-icon"></i></div>
-        </td>
-        <td>onenet_v3</td>
-        <td>git@gitlab.onenet.com:limao/onenet_v3.git</td>
-        <td>/data/deployment/gitrepo/onenet_v3</td>
-        <td>/data/deployment/deploydir/onenet_v3</td>
-        <td>/data/www/onenet_v3</td>
-        <td>2017-06-12 11:23</td>
-        &lt;!&ndash;<td><input type="checkbox" name="switch" lay-skin="switch"></td>&ndash;&gt;
-        <td>
-            <div class="layui-btn-group">
-                <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
-                <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>贤心</td>
-        <td>2016-11-29</td>
-        <td>人生就像是一场修行</td>
-        <td>2016-11-29</td>
-        <td>人生就像是一场修行</td>
-        <td>人生就像是一场修行</td>
-        <td>2016-11-29</td>
-        <td>人生就像是一场修行</td>
-    </tr>
-    </tbody>
-</table>-->
+
 {% endblock %}
 {% block script %}
 {{ super() }}
