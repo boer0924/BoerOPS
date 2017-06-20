@@ -11,7 +11,7 @@
             <div class="layui-input-block">
                 <input type="hidden" id="project_id" name="project_id">                
                 {% for host in hosts %}
-                <input type="checkbox" name="hosts[{{ host.id }}]" title="{{ host.ip_address }}">
+                <input type="checkbox" name="hosts[]" title="{{ host.ip_address }}" value="{{ host.id }}" lay-skin="primary" lay-filter="chk-hosts">
                 {% endfor %}
             </div>
         </div>

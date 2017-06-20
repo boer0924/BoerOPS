@@ -47,7 +47,7 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
             title: '添加主机',
             skin: 'layui-layer-molv',
             content: $('#add-host-ctx'),
-            area: ['600px', '360px'],
+            area: ['600px', '380px'],
             // area: 'auto',
             // maxWidth: '900px',
             closeBtn: 1,

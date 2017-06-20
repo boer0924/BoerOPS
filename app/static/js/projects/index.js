@@ -54,9 +54,15 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage', 'upload'], 
         return false;
     });
 
+    // 封装数据
+    var hosts = [];
+    form.on('checkbox(chk-hosts)', function (data) {
+        hosts.push(data.value);
+    });
     // 执行绑定
     form.on('submit(bindHost)', function(data) {
-        layer.msg(JSON.stringify(data.field));
+        data.field.hosts = hosts;
+        // layer.msg(JSON.stringify(data.field));
         $.ajax({
             type: 'POST',
             url: '/projects/bind',
@@ -122,7 +128,10 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage', 'upload'], 
     });
     
     // 绑定主机
-    $('table').on('click', '#bind-host-btn', function () {
+    $('table').on('click', '#bind-host-btn', function (e) {
+        var e = window.event || e;
+        var id = $(e.target).parent().parent().parent().find('td:eq(0)').find('input').val();
+        $('#project_id').val(id);
         layer.open({
             type: 1,
             title: '绑定主机',

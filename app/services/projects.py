@@ -3,6 +3,7 @@
 
 from . import Base
 from app.models import Project
+from .hosts import hosts
 
 class ProjectService(Base):
     __model__ = Project
@@ -10,4 +11,4 @@ class ProjectService(Base):
     
 
 projs = ProjectService()
-# C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\MobyLinuxVM.vhdx
+# C:\Users\Public\Documents\Hyper-V\Virtual Hard Disks\MobyLinuxVM.vhdx   

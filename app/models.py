@@ -51,7 +51,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, pwd)
 
     def __repr__(self):
-        return '<%s %r>' % (self.__class__.__name__, self.name)
+        return '<%s %r>' % (self.__class__.__name__, self.username)
 
 
 @login_manager.user_loader
@@ -98,8 +98,9 @@ class Host(db.Model):
     username = db.Column(db.String(32))
     password = db.Column(db.String(128))
     ssh_method = db.Column(db.Integer)
+    environ = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=db.func.now())
     updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 
     def __repr__(self):
-        return '<%s %r>' % (self.__class__.__name__, self.name)
+        return '<%s %r>' % (self.__class__.__name__, self.ip_address)

@@ -14,31 +14,20 @@ def uploads():
 
 @projects.route('/bind', methods=['POST'])
 def binds():
-    _hosts = request.form
-    print(_hosts)
+    _project_id = request.form.get('project_id')
     _hosts = request.form.getlist('hosts[]')
-    print(_hosts)
-    return 'done'
+    proj = projs.get(_project_id)
+    for host in set(_hosts):
+        proj.hosts.append(hosts.get(int(host)))
+    projs.save(proj)
+    return jsonify(code=200, msg='绑定成功')
 
 @projects.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         _id = request.form.get('id')
-        name = request.form.get('name')
-        repo_url = request.form.get('repo_url')
-        checkout_dir = request.form.get('checkout_dir')
-        compile_dir = request.form.get('compile_dir')
-        compile_cmd = request.form.get('compile_cmd')
-        playbook_path = request.form.get('playbook_path')
-
-        fields = dict(
-            name = name,
-            repo_url = repo_url,
-            checkout_dir = checkout_dir,
-            compile_dir = compile_dir,
-            compile_cmd = compile_cmd,
-            playbook_path = playbook_path
-        )
+        fields = request.form.to_dict()
+        fields.pop('playbook')
         # 修改操作
         if _id is not None:
             proj = projs.first(id=_id)
@@ -60,6 +49,13 @@ def index():
         return jsonify(code=200, msg='添加成功')
     
     _projects = projs.all()
+    for p in _projects:
+        # 测试主机
+        proj_test_hosts = [h.ip_address for h in p.hosts if h.environ == 0]
+        # 生产主机
+        proj_prod_hosts = [h.ip_address for h in p.hosts if h.environ == 1]
+        print(proj_test_hosts, proj_prod_hosts)
+        print('-----------')
     _hosts = hosts.all()
     return render_template('projects/index.html', projects=_projects, hosts=_hosts)
 
