@@ -101,23 +101,38 @@ def deploy():
         if not proj:
             return jsonify(rc=400, msg='项目不存在')
         
-        # hosts_list = [{'hostname': h.ip_address, 'port': h.ssh_port, 'username': h.username, 'password': h.password} for h in proj.hosts if h.environ == int(environ)]
-
+        import os
         import subprocess
         cmd = 'git clone -q %s %s' % (proj.repo_url, proj.checkout_dir)
+        
+        git_path = os.path.join(proj.checkout_dir, '.git')
+        if os.path.exists(git_path) and os.path.isdir(git_path):
+            cmd = 'cd %s && git fetch --all' % proj.checkout_dir
         rc = subprocess.call(cmd, shell=True)
         if rc != 0:
-            jsonify()
-
-        subprocess.check_call()
-        subprocess.check_output()
-
+            return jsonify(code=500, msg='内部错误')
+        cmd = 'cd %s && git reset --hard %s' % (proj.checkout_dir, version)
+        rc = subprocess.call(cmd, shell=True)
+        if rc != 0:
+            return jsonify(code=500, msg='内部错误')
+        cmd = 'rsync -qa --delete --exclude .git %s %s' % (proj.checkout_dir, proj.compile_dir)
+        rc = subprocess.call(cmd, shell=True)
+        
+        user_cmds = proj.compile_cmd.split('\n')
+        user_cmds = ' && '.join(user_cmds)
+        rc = subprocess.call(user_cmds, shell=True)
+        
+        # ansible playbook
         resource = {
             proj.name: {
                 'hosts': [{'hostname': h.ip_address, 'port': h.ssh_port, 'username': h.username, 'password': h.password} for h in proj.hosts if h.environ == int(environ)]
             }
         }
         print(resource)
+        return jsonify(code=200, msg='clone done')
+
+        # subprocess.check_call()
+        # subprocess.check_output()
 
     return render_template('projects/deploy.html')
 
@@ -125,4 +140,3 @@ def deploy():
 @projects.route('/rollback')
 def rollback():
     return render_template('projects/rollback.html')
-

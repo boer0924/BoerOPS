@@ -124,4 +124,4 @@ class Deploy(db.Model):
                               backref=db.backref("deploys", lazy="dynamic"))
 
     def __repr__(self):
-        return '<%s %r>' % (self.__class__.__name__, self.ip_address)
+        return '<%s %r>' % (self.__class__.__name__, self.version)
