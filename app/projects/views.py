@@ -5,6 +5,7 @@ from . import projects
 from app.utils.uploads import upload_file
 from app.services.projects import projs
 from app.services.hosts import hosts
+from app.services.deploys import deploys
 
 from flask import render_template, request, jsonify, current_app
 
@@ -51,11 +52,10 @@ def index():
     _projects = projs.all()
     for p in _projects:
         # 测试主机
-        proj_test_hosts = [h.ip_address for h in p.hosts if h.environ == 0]
+        proj_30test_hosts = [h.ip_address for h in p.hosts if h.environ == 0]
+        proj_31test_hosts = [h.ip_address for h in p.hosts if h.environ == 1]
         # 生产主机
-        proj_prod_hosts = [h.ip_address for h in p.hosts if h.environ == 1]
-        print(proj_test_hosts, proj_prod_hosts)
-        print('-----------')
+        proj_prod_hosts = [h.ip_address for h in p.hosts if h.environ == 2]
     _hosts = hosts.all()
     return render_template('projects/index.html', projects=_projects, hosts=_hosts)
 
@@ -86,8 +86,39 @@ def project_hosts():
     return render_template('projects/hosts.html', hosts=_hosts)
 
 
-@projects.route('/deploy')
+@projects.route('/deploy', methods=['GET', 'POST'])
 def deploy():
+    # 全部项目列表
+    # ps = map(lambda p: p.name, projs.all())
+    # all_projects = list(ps)
+    if request.method == 'POST':
+        fields = request.form.to_dict()
+        project_name = fields.get('name')
+        version = fields.get('version')
+        environ = fields.get('environ')        
+
+        proj = projs.first(name=project_name.strip())
+        if not proj:
+            return jsonify(rc=400, msg='项目不存在')
+        
+        # hosts_list = [{'hostname': h.ip_address, 'port': h.ssh_port, 'username': h.username, 'password': h.password} for h in proj.hosts if h.environ == int(environ)]
+
+        import subprocess
+        cmd = 'git clone -q %s %s' % (proj.repo_url, proj.checkout_dir)
+        rc = subprocess.call(cmd, shell=True)
+        if rc != 0:
+            jsonify()
+
+        subprocess.check_call()
+        subprocess.check_output()
+
+        resource = {
+            proj.name: {
+                'hosts': [{'hostname': h.ip_address, 'port': h.ssh_port, 'username': h.username, 'password': h.password} for h in proj.hosts if h.environ == int(environ)]
+            }
+        }
+        print(resource)
+
     return render_template('projects/deploy.html')
 
 

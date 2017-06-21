@@ -29,7 +29,7 @@ body {
 
 .progress-meter {
   margin: 20px auto 40px;
-  padding: 40px;
+  padding: 20px;
 }
 
 .progress-meter {
@@ -85,15 +85,30 @@ body {
   left: 0%;
 }
 .progress-meter .progress-points [data-point='2'] {
-  left: 25%;
+  left: 11.1%;
 }
 .progress-meter .progress-points [data-point='3'] {
-  left: 50%;
+  left: 22.2%;
 }
 .progress-meter .progress-points [data-point='4'] {
-  left: 75%;
+  left: 33.3%;
 }
 .progress-meter .progress-points [data-point='5'] {
+  left: 44.4%;
+}
+.progress-meter .progress-points [data-point='6'] {
+  left: 55.5%;
+}
+.progress-meter .progress-points [data-point='7'] {
+  left: 66.6%;
+}
+.progress-meter .progress-points [data-point='8'] {
+  left: 77.7%;
+}
+.progress-meter .progress-points [data-point='9'] {
+  left: 88.8%;
+}
+.progress-meter .progress-points [data-point='10'] {
   left: 100%;
 }
 .progress-meter .progress-point {

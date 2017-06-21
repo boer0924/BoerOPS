@@ -3,7 +3,48 @@
 {{ super() }}
 <link rel="stylesheet" href="/static/css/deploy.css">
 {% endblock %}
+{% block layer %}
+{{ super() }}
+<div class="layui-tab-item" id="deploy-info-ctx">
+    <form class="layui-form boer-layer-form" method="post">
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">项目名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="项目名称" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">commit id</label>
+            <div class="layui-input-block">
+                <input type="text" name="version" required  lay-verify="required" placeholder="commit id" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">测试环境</label>
+            <div class="layui-input-block">
+              <input type="radio" name="environ" value="0" title="30测试">
+              <input type="radio" name="environ" value="1" title="31测试">
+              <input type="radio" name="environ" value="2" title="线上环境">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="deployTest">绑定</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
 {% block content %}
+<div style="width:70%; height:120px; margin:0 auto;margin-top:60px;">
+  <button id="deploy-info-btn" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe642;</i> 填写信息</button>
+  <!--<button class="layui-btn layui-btn-radius">30提测成功</button>-->
+  <div style="display:inline-block">
+    <button class="layui-btn layui-btn-radius">测试通过</button>    
+    <button class="layui-btn layui-btn-danger layui-btn-radius">测试未通过</button>    
+  </div>
+</div>
 <div class="inliner"></div>
 <div class="inlined">
   <div class="progress-meter">
@@ -12,18 +53,33 @@
     </div>
     <ol class="progress-points" data-current="4">
       <li class="progress-point" data-point="1">
-        <span class="label">需求</span>
+        <span class="label">填写信息</span>
       </li>
       <li class="progress-point" data-point="2">
-        <span class="label">设计</span>
+        <span class="label">测试部署中...</span>
       </li>
       <li class="progress-point" data-point="3">
-        <span class="label">开发</span>
+        <span class="label">成功部署30/31/失败</span>
       </li>
       <li class="progress-point" data-point="4">
         <span class="label">测试</span></li>
       <li class="progress-point" data-point="5">
-        <span class="label">发布</span>
+        <span class="label">上线发布中...</span>
+      </li>
+      <li class="progress-point" data-point="6">
+        <span class="label">上线成功/失败</span>
+      </li>
+      <li class="progress-point" data-point="7">
+        <span class="label">校验</span>
+      </li>
+      <li class="progress-point" data-point="8">
+        <span class="label">发布版本</span>
+      </li>
+      <li class="progress-point" data-point="9">
+        <span class="label">发布成功/失败(合回master是否)</span>
+      </li>
+      <li class="progress-point" data-point="10">
+        <span class="label">finish</span>
       </li>
     </ol>
   </div>

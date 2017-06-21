@@ -104,3 +104,24 @@ class Host(db.Model):
 
     def __repr__(self):
         return '<%s %r>' % (self.__class__.__name__, self.ip_address)
+
+class Deploy(db.Model):
+    __tablename__ = 'deploys'
+
+    id = db.Column(db.Integer, primary_key=True)
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    version = db.Column(db.String(64))
+    mode = db.Column(db.Integer)
+    status = db.Column(db.Integer)
+    comment = db.Column(db.Text)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    created_at = db.Column(db.DateTime, default=db.func.now())
+    updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
+
+    user = db.relationship('User',
+                           backref=db.backref("deploys", lazy="dynamic"))
+    project = db.relationship('Project',
+                              backref=db.backref("deploys", lazy="dynamic"))
+
+    def __repr__(self):
+        return '<%s %r>' % (self.__class__.__name__, self.ip_address)
