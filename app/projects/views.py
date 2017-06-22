@@ -129,7 +129,7 @@ def deploy():
             }
         }
         print(resource)
-        return jsonify(code=200, msg='clone done')
+        return jsonify(code=200, msg='job done')
 
         # subprocess.check_call()
         # subprocess.check_output()
