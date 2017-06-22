@@ -1,0 +1,9 @@
+---
+- hosts: pydelo
+  remote_user: root
+  gather_facts: no
+  tasks:
+  - name: make base dir
+    file: path=/tmp/pydelo_dpl state=directory mode=0755 owner=nginx group=nginx
+  - name: resource file extract
+    unarchive: src=/tmp/pydelo.tar.gz dest=/tmp/pydelo_dpl copy=yes

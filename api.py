@@ -113,3 +113,19 @@ finally:
 #     db.session.add(admin_role)
 #     db.session.add(admin_user)
 #     db.session.commit()
+
+
+pydelo
+
+git@github.com:meanstrong/pydelo.git
+
+/tmp/pydelo_chk
+
+/tmp/pydelo_pkg
+
+echo "***begin compile***"
+touch /tmp/pydelo_pkg/compile_test.txt
+echo "***end compile***"
+cd /tmp/pydelo_pkg
+rm -f /tmp/pydelo.tar.gz
+tar -zcf /tmp/pydelo.tar.gz *

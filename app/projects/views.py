@@ -3,15 +3,19 @@
 
 from . import projects
 from app.utils.uploads import upload_file
+from app.utils.remoteshell import MyRunner
 from app.services.projects import projs
 from app.services.hosts import hosts
 from app.services.deploys import deploys
 
 from flask import render_template, request, jsonify, current_app
 
+import os
+
 @projects.route('/uploads', methods=['GET', 'POST'])
 def uploads():
-    return upload_file()
+    UPLOAD_FOLDER = os.path.join(os.path.dirname(current_app.root_path), 'playbook')
+    return upload_file(UPLOAD_FOLDER)
 
 @projects.route('/bind', methods=['POST'])
 def binds():
@@ -107,28 +111,43 @@ def deploy():
         
         git_path = os.path.join(proj.checkout_dir, '.git')
         if os.path.exists(git_path) and os.path.isdir(git_path):
-            cmd = 'cd %s && git fetch --all' % proj.checkout_dir
+            cmd = 'cd %s && git fetch --all -fq' % proj.checkout_dir
         rc = subprocess.call(cmd, shell=True)
         if rc != 0:
-            return jsonify(code=500, msg='内部错误')
-        cmd = 'cd %s && git reset --hard %s' % (proj.checkout_dir, version)
+            return jsonify(code=500, msg='获取代码失败')
+        cmd = 'cd %s && git reset -q --hard %s' % (proj.checkout_dir, version.strip())
         rc = subprocess.call(cmd, shell=True)
+        print('----reset-----', cmd)
         if rc != 0:
-            return jsonify(code=500, msg='内部错误')
-        cmd = 'rsync -qa --delete --exclude .git %s %s' % (proj.checkout_dir, proj.compile_dir)
+            return jsonify(code=500, msg='检出代码失败')
+        cmd = 'rsync -qa --delete --exclude .git %s%s %s%s' % (proj.checkout_dir, os.sep, proj.compile_dir, os.sep)
         rc = subprocess.call(cmd, shell=True)
-        
+        print('---rsync-----', cmd)
+        if rc != 0:
+            return jsonify(code=500, msg='同步代码失败')
         user_cmds = proj.compile_cmd.split('\n')
+        print('--list---', user_cmds)
         user_cmds = ' && '.join(user_cmds)
+        print('--string---', user_cmds)
         rc = subprocess.call(user_cmds, shell=True)
-        
+        if rc != 0:
+            return jsonify(code=500, msg='用户命令执行失败')
         # ansible playbook
         resource = {
             proj.name: {
-                'hosts': [{'hostname': h.ip_address, 'port': h.ssh_port, 'username': h.username, 'password': h.password} for h in proj.hosts if h.environ == int(environ)]
+                'hosts': [{'hostname': h.ip_address, 'port': h.ssh_port, 'username': h.username, 'password': h.password} for h in proj.hosts if h.environ == int(environ)],
+                'vars': {
+                    'ansible_user': 'boer',
+                    'ansible_become': True,
+                    'ansible_become_method': 'sudo',
+                    'ansible_become_user': 'root',
+                    'ansible_become_pass': 'Admin@123'
+                }
             }
         }
         print(resource)
+        runner = MyRunner(resource)
+        runner.run_playbook(proj.playbook_path)
         return jsonify(code=200, msg='job done')
 
         # subprocess.check_call()

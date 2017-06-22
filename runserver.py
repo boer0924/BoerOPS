@@ -4,7 +4,7 @@ import socket
 
 if __name__ == '__main__':
     app = create_app('dev')
-    if socket.gethostname() != 'Boer-PC':
+    if socket.gethostname() not in ['Boer-PC', 'boer-PC']:
         app = create_app('prod')
     
     app.run(host='0.0.0.0')
