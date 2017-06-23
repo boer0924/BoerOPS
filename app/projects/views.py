@@ -4,6 +4,7 @@
 from . import projects
 from app.utils.uploads import upload_file
 from app.utils.remoteshell import MyRunner
+from app.utils.helper import get_dynamic_inventory
 from app.services.projects import projs
 from app.services.hosts import hosts
 from app.services.deploys import deploys
@@ -54,12 +55,8 @@ def index():
         return jsonify(code=200, msg='添加成功')
     
     _projects = projs.all()
-    for p in _projects:
-        # 测试主机
-        proj_30test_hosts = [h.ip_address for h in p.hosts if h.environ == 0]
-        proj_31test_hosts = [h.ip_address for h in p.hosts if h.environ == 1]
-        # 生产主机
-        proj_prod_hosts = [h.ip_address for h in p.hosts if h.environ == 2]
+    # for index, p in enumerate(_projects):
+        # host_lists = [h.ip_address for h in p.hosts if h.environ == 2]
     _hosts = hosts.all()
     return render_template('projects/index.html', projects=_projects, hosts=_hosts)
 
@@ -132,22 +129,16 @@ def deploy():
         rc = subprocess.call(user_cmds, shell=True)
         if rc != 0:
             return jsonify(code=500, msg='用户命令执行失败')
-        # ansible playbook
-        resource = {
-            proj.name: {
-                'hosts': [{'hostname': h.ip_address, 'port': h.ssh_port, 'username': h.username, 'password': h.password} for h in proj.hosts if h.environ == int(environ)],
-                'vars': {
-                    'ansible_user': 'boer',
-                    'ansible_become': True,
-                    'ansible_become_method': 'sudo',
-                    'ansible_become_user': 'root',
-                    'ansible_become_pass': 'Admin@123'
-                }
-            }
-        }
-        print(resource)
+        resource = get_dynamic_inventory(proj, environ)
+        # print(resource)
+        host_lists = [h.ip_address for h in proj.hosts if h.environ == int(environ)]
         runner = MyRunner(resource)
-        runner.run_playbook(proj.playbook_path)
+        # ansible playbook
+        runner.run_playbook(host_lists, proj.playbook_path)
+        print(runner.get_playbook_result())
+        print('\n-----\n')
+        runner.run_module(host_lists, 'shell', 'whoami')
+        print(runner.get_module_result())
         return jsonify(code=200, msg='job done')
 
         # subprocess.check_call()

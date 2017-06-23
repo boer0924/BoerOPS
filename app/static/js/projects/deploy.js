@@ -25,7 +25,9 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
 
     // 执行绑定
     form.on('submit(deployTest)', function(data) {
-        layer.msg(JSON.stringify(data.field));
+        layer.closeAll();
+        layer.load();
+        // layer.msg(JSON.stringify(data.field));
         $.ajax({
             type: 'POST',
             url: '/projects/deploy',
@@ -34,15 +36,16 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
             // contentType: false,
             processData: true,
             success: function (data, txtStatus, jqXHR) {
+                layer.closeAll('loading');
                 if (data.code === 200) {
                     layer.msg(data.msg, {
                         icon: 1,
-                        time: 2000,
+                        time: 1600,
                         anim: 0,
                         shade: [0.6, '#c2c2c2']
                     },
                     function () {
-                        location.href="/projects/";
+                        location.href="/projects/deploy";
                     });
 
                 } else {
