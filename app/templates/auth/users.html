@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block layer %}
+{{ super() }}
+<div class="layui-tab-item" id="add-user-ctx">
+    <form class="layui-form boer-layer-form" action="/projects/hosts" enctype="multipart/form-data" method="post">
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" required  lay-verify="required" placeholder="用户名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">初始密码</label>
+            <div class="layui-input-block">
+                <input type="text" name="password" required  lay-verify="required" placeholder="初始密码" autocomplete="off" class="layui-input">                
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">姓名</label>                                
+            <div class="layui-input-block">   
+                <input type="text" name="name" required  lay-verify="required" placeholder="真实姓名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">职位</label>
+            <div class="layui-input-block">
+                <input type="radio" name="job" value="0" title="前端">
+                <input type="radio" name="job" value="1" title="后端">
+                <input type="radio" name="job" value="2" title="测试">
+                <input type="radio" name="job" value="3" title="运维">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">邮箱</label>
+            <div class="layui-input-block">
+                <input type="text" name="email" required  lay-verify="required" placeholder="邮箱地址" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">电话</label>
+            <div class="layui-input-block">
+                <input type="text" name="phone" required  lay-verify="required" placeholder="电话号码" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        
+        <div class="layui-form-item boer-layer-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addUser">添加用户</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<blockquote class="layui-elem-quote">
+<span class="layui-breadcrumb" lay-separator="/">
+    <a href="/">首页</a>
+    <a><cite>用户列表</cite></a>
+</span>
+</blockquote>
+<blockquote class="layui-elem-quote layui-quote-nm">
+    <div class="layui-form boer-element-inline">
+            <button id="add-user-btn" class="layui-btn"><i class="layui-icon">&#xe61f;</i> 添加用户</button>                                                                                                     
+    </div> 
+    <form class="layui-form boer-element-inline boer-element-right" action="">
+            <input type="text" name="search" placeholder="搜索内容" class="layui-input boer-input-search">
+            <button class="layui-btn"><i class="layui-icon">&#xe615;</i> 搜索</button>                                                                 
+    </form>                            
+</blockquote>
+<form class="layui-form">
+    <table class="layui-table" lay-skin="line">
+        <colgroup></colgroup>
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>用户名</th>
+            <th>姓名</th>
+            <th>职位</th>
+            <th>邮箱</th>
+            <th>电话</th>
+            <th>操作</th>
+            </tr> 
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="{{ user.id }}" lay-skin="primary">
+                </td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.job }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.phone }}</td>
+                <!--<td>
+                    <input type="checkbox" name="switch" lay-skin="switch">
+                </td>-->
+                <td>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
+                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="全选" lay-skin="primary" lay-filter="chk-all">
+                </td>
+                <td>
+                    <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="5">
+                    <div id="page1"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script src="/static/js/auth/users.js"></script>
+{% endblock %}

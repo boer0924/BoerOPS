@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block layer %}
+{{ super() }}
+<div class="layui-tab-item" id="add-group-ctx">
+    <form class="layui-form boer-layer-form" action="/projects/hosts" enctype="multipart/form-data" method="post">
+        <div class="layui-form-item boer-layer-item">
+            <label class="layui-form-label">组名</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="用户组名" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item boer-layer-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="addGroup">添加</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block content %}
+<blockquote class="layui-elem-quote">
+<span class="layui-breadcrumb" lay-separator="/">
+    <a href="/">首页</a>
+    <a><cite>用户组列表</cite></a>
+</span>
+</blockquote>
+<blockquote class="layui-elem-quote layui-quote-nm">
+    <div class="layui-form boer-element-inline">
+            <button id="add-group-btn" class="layui-btn"><i class="layui-icon">&#xe61f;</i> 添加用户组</button>                                                                                                     
+    </div> 
+    <form class="layui-form boer-element-inline boer-element-right" action="">
+            <input type="text" name="search" placeholder="搜索内容" class="layui-input boer-input-search">
+            <button class="layui-btn"><i class="layui-icon">&#xe615;</i> 搜索</button>                                                                 
+    </form>                            
+</blockquote>
+<form class="layui-form">
+    <table class="layui-table" lay-skin="line">
+        <colgroup></colgroup>
+        <thead>
+            <tr>
+            <th>ID</th>
+            <th>名字</th>
+            <th>所有用户</th>
+            <th>操作</th>
+            </tr> 
+        </thead>
+        <tbody>
+            {% for role in roles %}
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="{{ role.id }}" lay-skin="primary">
+                </td>
+                <td>{{ role.name }}</td>
+                <td>{{ role.users.all()|map(attribute='name')|join(', ') }}</td>
+                <td>
+                    <div class="layui-btn-group">
+                        <button class="layui-btn layui-btn-small"><i class="layui-icon">&#xe642;</i> 编辑</button>
+                        <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        
+            <tr>
+                <td>
+                    <input type="checkbox" name="items[]" title="全选" lay-skin="primary" lay-filter="chk-all">
+                </td>
+                <td>
+                    <button class="layui-btn layui-btn-small layui-btn-danger"><i class="layui-icon">&#xe640;</i> 删除</button>
+                </td>
+                <td colspan="2"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td colspan="2">
+                    <div id="page1"></div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+{% endblock %}
+{% block script %}
+{{ super() }}
+<script src="/static/js/auth/groups.js"></script>
+{% endblock %}
