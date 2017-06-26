@@ -23,12 +23,11 @@
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">
-            <label class="layui-form-label">职位</label>
+            <label class="layui-form-label">角色</label>
             <div class="layui-input-block">
-                <input type="radio" name="job" value="0" title="前端">
-                <input type="radio" name="job" value="1" title="后端">
-                <input type="radio" name="job" value="2" title="测试">
-                <input type="radio" name="job" value="3" title="运维">
+                {% for role in roles %}
+                <input type="radio" name="role_id" value="{{ role.id }}" title="{{ role.name }}">
+                {% endfor %}
             </div>
         </div>
         <div class="layui-form-item boer-layer-item">
@@ -92,7 +91,7 @@
                 </td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.name }}</td>
-                <td>{{ user.job }}</td>
+                <td>{{ user.role.name }}</td>
                 <td>{{ user.email }}</td>
                 <td>{{ user.phone }}</td>
                 <!--<td>

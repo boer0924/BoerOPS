@@ -142,8 +142,8 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
     // });
     // 执行绑定
     form.on('submit(doLogin)', function(data) {
-        // layer.load();
-        layer.msg(JSON.stringify(data.field));
+        layer.load();
+        // layer.msg(JSON.stringify(data.field));
         $.ajax({
             type: 'POST',
             url: '/login',
@@ -152,7 +152,7 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
             // contentType: false,
             processData: true,
             success: function (data, txtStatus, jqXHR) {
-                // layer.closeAll('loading');
+                layer.closeAll('loading');
                 if (data.code === 200) {
                     layer.msg(data.msg, {
                         icon: 1,
@@ -161,7 +161,7 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
                         shade: [0.6, '#c2c2c2']
                     },
                     function () {
-                        location.href="/projects/projects";
+                        location.href="/projects";
                     });
 
                 } else {
