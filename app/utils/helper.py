@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
-__all__ = ['get_dynamic_inventory']
+from functools import wraps
+from flask import g, request, redirect, url_for, json
+import jwt
+
+from app.services.users import users
+from app.services.roles import roles
+
+__all__ = ['get_dynamic_inventory', 'login_required']
 
 def get_dynamic_inventory(proj, environ):
     return {
@@ -20,3 +27,24 @@ def get_dynamic_inventory(proj, environ):
             }
         }
     }
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        token = request.cookies.get('token')
+        if not token:
+            return redirect(url_for('auth.login', redirect_uri=request.path))
+        try:
+            token = jwt.decode(token, 'balabala')
+            g.user = users.get(token['uid'])
+            g.role = roles.get(token['rid'])
+        except jwt.ExpiredSignature as e:
+            return redirect(url_for('auth.login', redirect_uri=request.path))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+def permission_required(f):
+    # http://flask.pocoo.org/snippets/98/
+    pass

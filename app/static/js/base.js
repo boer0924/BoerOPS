@@ -12,7 +12,35 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit'], function () {
     });
     // 表单提交
     form.on('submit(resetPassword)', function(data) {
-        layer.msg(JSON.stringify(data.field));
+        // layer.msg(JSON.stringify(data.field));
+        $.ajax({
+            type: 'POST',
+            url: '/reset',
+            data: data.field,
+            dataType: 'json',
+            processData: true,
+            success: function (data, txtStatus, jqXHR) {
+                if (data.code === 200) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 2000,
+                        anim: 0,
+                        shade: [0.6, '#c2c2c2']
+                    },
+                    layer.closeAll());
+                    // function () {
+                    //     location.reload();
+                    // });
+                } else {
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        time: 2000,
+                        anim: 6,
+                        shade: [0.6, '#c2c2c2']
+                    });
+                }
+            }
+        });
         return false;
     });
     // 列表全部选择

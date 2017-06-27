@@ -120,6 +120,7 @@
             <form class="login-form layui-form" method="post">
                 <input type="text" name="username" placeholder="username"/>
                 <input type="password" name="password" placeholder="password"/>
+                <input type="hidden" name="redirect_uri" value="{{redirect_uri}}">
                 <button lay-submit lay-filter="doLogin">login</button>
                 <!--<p class="message">Not registered? <a href="#">Create an account</a></p>-->
             </form>
@@ -161,7 +162,7 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
                         shade: [0.6, '#c2c2c2']
                     },
                     function () {
-                        location.href="/projects";
+                        location.href=data.redirect_uri;
                     });
 
                 } else {

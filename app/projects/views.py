@@ -4,7 +4,7 @@
 from . import projects
 from app.utils.uploads import upload_file
 from app.utils.remoteshell import MyRunner
-from app.utils.helper import get_dynamic_inventory
+from app.utils.helper import get_dynamic_inventory, login_required
 from app.services.projects import projs
 from app.services.hosts import hosts
 from app.services.deploys import deploys
@@ -14,11 +14,13 @@ from flask import render_template, request, jsonify, current_app
 import os
 
 @projects.route('/uploads', methods=['GET', 'POST'])
+@login_required
 def uploads():
     UPLOAD_FOLDER = os.path.join(os.path.dirname(current_app.root_path), 'playbook')
     return upload_file(UPLOAD_FOLDER)
 
 @projects.route('/bind', methods=['POST'])
+@login_required
 def binds():
     _project_id = request.form.get('project_id')
     _hosts = request.form.getlist('hosts[]')
@@ -29,6 +31,7 @@ def binds():
     return jsonify(code=200, msg='绑定成功')
 
 @projects.route('/', methods=['GET', 'POST'])
+@login_required
 def index():
     if request.method == 'POST':
         _id = request.form.get('id')
@@ -61,6 +64,7 @@ def index():
     return render_template('projects/index.html', projects=_projects, hosts=_hosts)
 
 @projects.route('/hosts', methods=['GET', 'POST'])
+@login_required
 def project_hosts():
     if request.method == 'POST':
         _id = request.form.get('id')
@@ -88,6 +92,7 @@ def project_hosts():
 
 
 @projects.route('/deploy', methods=['GET', 'POST'])
+@login_required
 def deploy():
     # 全部项目列表
     # ps = map(lambda p: p.name, projs.all())
