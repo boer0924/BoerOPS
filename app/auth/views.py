@@ -8,7 +8,7 @@ import jwt
 
 from app.services.roles import roles
 from app.services.users import users
-from app.utils.helper import login_required
+from app.utils.helper import login_required, permission_required, write_required
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -35,6 +35,7 @@ def login():
 
 @auth.route('/users', methods=['GET', 'POST'])
 @login_required
+@permission_required(4, 6)
 def user():
     if request.method == 'POST':
         users.create(**request.form.to_dict())
@@ -46,6 +47,7 @@ def user():
 
 @auth.route('/groups', methods=['GET', 'POST'])
 @login_required
+@permission_required(4, 6, alls=True)
 def group():
     if request.method == 'POST':
         roles.create(**request.form.to_dict())
@@ -72,3 +74,7 @@ def reset_password():
             return jsonify(code=200, msg='修改成功')
         else:
             return jsonify(code=403, msg='权限不足')
+
+@auth.errorhandler(403)
+def access_forbidden(e):
+    return render_template('auth/403.html'), 403

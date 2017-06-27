@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from functools import wraps
-from flask import g, request, redirect, url_for, json
+from flask import g, request, redirect, url_for, json, abort, jsonify
 import jwt
 
 from app.services.users import users
 from app.services.roles import roles
 
-__all__ = ['get_dynamic_inventory', 'login_required']
+__all__ = [
+    'get_dynamic_inventory', 'login_required', 'permission_required',
+    'write_required'
+]
 
 def get_dynamic_inventory(proj, environ):
     return {
@@ -45,6 +48,25 @@ def login_required(f):
     return decorated_function
 
 
-def permission_required(f):
+def permission_required(*roles, alls=False):
     # http://flask.pocoo.org/snippets/98/
-    pass
+    def wrapper(f):
+        @wraps(f)
+        def wrapped(*args, **kwargs):
+            if g.role.id not in roles:
+                if alls:
+                    abort(403)
+                if request.method == 'POST':
+                    return jsonify(code=405, msg='权限不足')                    
+            return f(*args, **kwargs)
+        return wrapped
+    return wrapper
+
+
+def write_required(f):
+    @wraps(f)
+    def wrapped(*args, **kwargs):
+        if request.method == 'POST':
+            return jsonify(code=405, msg='权限不足')
+        return f(*args, **kwargs)
+    return wrapped
