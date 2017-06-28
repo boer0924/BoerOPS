@@ -103,8 +103,8 @@ def deploy_step_first():
         deploys.create(project_id=proj.id, user_id=g.user.id, version=version, mode=environ)
         results = deploys.deploy_task(proj.id)
         return jsonify(code=200, msg='job done', status=status)
-
     return render_template('projects/deploy.html')
+
 
 @projects.route('/deploy/second', methods=['GET', 'POST'])
 @login_required
@@ -113,6 +113,7 @@ def deploy_step_second():
 
         results = deploys.deploy_task(proj.id)
         return jsonify(code=200, msg='job done', status=status)
+
 
 @projects.route('/rollback')
 def rollback():

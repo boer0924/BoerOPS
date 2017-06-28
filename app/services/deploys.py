@@ -36,7 +36,10 @@ class DeployService(Base):
         # 执行ansible playbook
         runner = MyRunner(resource)
         runner.run_playbook(host_lists, c_d.project.playbook_path)
-        self.update(c_d, status=1)
+        if c_d.environ == 2:
+            self.update(c_d, status=3)
+        else:
+            self.update(c_d, status=1)
         return runner.get_playbook_result()
 
     
