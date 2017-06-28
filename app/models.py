@@ -110,11 +110,12 @@ class Deploy(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     version = db.Column(db.String(64))
     mode = db.Column(db.Integer)
     status = db.Column(db.Integer)
     comment = db.Column(db.Text)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    result = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=db.func.now())
     updated_at = db.Column(db.DateTime, default=db.func.now(), onupdate=db.func.now())
 

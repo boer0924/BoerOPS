@@ -80,11 +80,11 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
 
         activate = function(index) {
             if (index !== active) {
-            active = index;
-            $point_arr.removeClass('completed active');
-            $point_arr.slice(0, index).addClass('completed');
-            $point_arr.eq(active).addClass('active');
-            return $progress.css('width', (index / max * 100) + "%");
+                active = index;
+                $point_arr.removeClass('completed active');
+                $point_arr.slice(0, index).addClass('completed');
+                $point_arr.eq(active).addClass('active');
+                return $progress.css('width', (index / max * 100) + "%");
             }
         };
 

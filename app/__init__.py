@@ -2,6 +2,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_mail import Mail
+import redis
+
 from config import config
 
 # app = Flask(__name__)
@@ -9,7 +11,7 @@ from config import config
 db = SQLAlchemy()
 login_manager = LoginManager()
 mail = Mail()
-
+redis = redis.Redis(host='127.0.0.1', port=6379, db=0)
 
 def create_app(config_name):
     app = Flask(__name__)

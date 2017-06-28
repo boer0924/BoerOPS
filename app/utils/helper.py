@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from functools import wraps
-from flask import g, request, redirect, url_for, json, abort, jsonify
+from flask import g, request, redirect, url_for, json, abort, jsonify, current_app
 import jwt
 
 from app.services.users import users
@@ -39,10 +39,10 @@ def login_required(f):
         if not token:
             return redirect(url_for('auth.login', redirect_uri=request.path))
         try:
-            token = jwt.decode(token, 'balabala')
+            token = jwt.decode(token, current_app.config['SECRET_KEY'])
             g.user = users.get(token['uid'])
             g.role = roles.get(token['rid'])
-        except jwt.ExpiredSignature as e:
+        except jwt.InvalidTokenError as e:
             return redirect(url_for('auth.login', redirect_uri=request.path))
         return f(*args, **kwargs)
     return decorated_function
@@ -53,7 +53,7 @@ def permission_required(*roles, alls=False):
     def wrapper(f):
         @wraps(f)
         def wrapped(*args, **kwargs):
-            if g.role.id not in roles:
+            if g.role.id in roles:
                 if alls:
                     abort(403)
                 if request.method == 'POST':

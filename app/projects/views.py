@@ -42,13 +42,11 @@ def index():
             proj = projs.first(id=_id)
             if not proj:
                 return jsonify(code=404, msg='记录不存在')
-            
             try:
                 projs.update(proj, **fields)
             except Exception as e:
                 return jsonify(code=500, msg='修改失败')     
             return jsonify(code=200, msg='修改成功')
-                       
         # 添加操作
         try:
             projs.create(**fields)
@@ -56,12 +54,10 @@ def index():
             print(e)
             return jsonify(code=500, msg='添加失败')
         return jsonify(code=200, msg='添加成功')
-    
     _projects = projs.all()
-    # for index, p in enumerate(_projects):
-        # host_lists = [h.ip_address for h in p.hosts if h.environ == 2]
     _hosts = hosts.all()
     return render_template('projects/index.html', projects=_projects, hosts=_hosts)
+
 
 @projects.route('/hosts', methods=['GET', 'POST'])
 @login_required
@@ -73,13 +69,11 @@ def project_hosts():
             host = hosts.first(id=_id)
             if not host:
                 return jsonify(code=404, msg='记录不存在')
-            
             try:
                 hosts.update(host, **request.form.to_dict())
             except Exception as e:
                 return jsonify(code=500, msg='修改失败')     
             return jsonify(code=200, msg='修改成功')
-                       
         # 添加操作
         try:
             hosts.create(**request.form.to_dict())
@@ -93,64 +87,32 @@ def project_hosts():
 
 @projects.route('/deploy', methods=['GET', 'POST'])
 @login_required
-def deploy():
-    # 全部项目列表
-    # ps = map(lambda p: p.name, projs.all())
-    # all_projects = list(ps)
+def deploy_step_first():
     if request.method == 'POST':
         fields = request.form.to_dict()
         project_name = fields.get('name')
         version = fields.get('version')
         environ = fields.get('environ')        
-
         proj = projs.first(name=project_name.strip())
         if not proj:
             return jsonify(rc=400, msg='项目不存在')
-        
-        import os
-        import subprocess
-        cmd = 'git clone -q %s %s' % (proj.repo_url, proj.checkout_dir)
-        
-        git_path = os.path.join(proj.checkout_dir, '.git')
-        if os.path.exists(git_path) and os.path.isdir(git_path):
-            cmd = 'cd %s && git fetch --all -fq' % proj.checkout_dir
-        rc = subprocess.call(cmd, shell=True)
-        if rc != 0:
-            return jsonify(code=500, msg='获取代码失败')
-        cmd = 'cd %s && git reset -q --hard %s' % (proj.checkout_dir, version.strip())
-        rc = subprocess.call(cmd, shell=True)
-        print('----reset-----', cmd)
-        if rc != 0:
-            return jsonify(code=500, msg='检出代码失败')
-        cmd = 'rsync -qa --delete --exclude .git %s%s %s%s' % (proj.checkout_dir, os.sep, proj.compile_dir, os.sep)
-        rc = subprocess.call(cmd, shell=True)
-        print('---rsync-----', cmd)
-        if rc != 0:
-            return jsonify(code=500, msg='同步代码失败')
-        user_cmds = proj.compile_cmd.split('\n')
-        print('--list---', user_cmds)
-        user_cmds = ' && '.join(user_cmds)
-        print('--string---', user_cmds)
-        rc = subprocess.call(user_cmds, shell=True)
-        if rc != 0:
-            return jsonify(code=500, msg='用户命令执行失败')
-        resource = get_dynamic_inventory(proj, environ)
-        # print(resource)
-        host_lists = [h.ip_address for h in proj.hosts if h.environ == int(environ)]
-        runner = MyRunner(resource)
-        # ansible playbook
-        runner.run_playbook(host_lists, proj.playbook_path)
-        print(runner.get_playbook_result())
-        print('\n-----\n')
-        runner.run_module(host_lists, 'shell', 'whoami')
-        print(runner.get_module_result())
-        return jsonify(code=200, msg='job done')
-
-        # subprocess.check_call()
-        # subprocess.check_output()
+        status = 1
+        if environ == 2:
+            deploys.create(project_id=proj.id, user_id=g.user.id, version=version, mode=environ, status=3)
+            status = 4
+        deploys.create(project_id=proj.id, user_id=g.user.id, version=version, mode=environ)
+        results = deploys.deploy_task(proj.id)
+        return jsonify(code=200, msg='job done', status=status)
 
     return render_template('projects/deploy.html')
 
+@projects.route('/deploy/second', methods=['GET', 'POST'])
+@login_required
+def deploy_step_second():
+    if request.method == 'POST':
+
+        results = deploys.deploy_task(proj.id)
+        return jsonify(code=200, msg='job done', status=status)
 
 @projects.route('/rollback')
 def rollback():
