@@ -1,41 +1,50 @@
--- --------------------------------------------------------
--- 主机:                           127.0.0.1
--- 服务器版本:                        5.7.17 - MySQL Community Server (GPL)
--- 服务器操作系统:                      Linux
--- HeidiSQL 版本:                  9.4.0.5174
--- --------------------------------------------------------
+-- MySQL dump 10.13  Distrib 5.7.18, for Linux (x86_64)
+--
+-- Host: localhost    Database: boerops_dev
+-- ------------------------------------------------------
+-- Server version	5.7.18-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+--
+-- Table structure for table `deploys`
+--
 
--- 导出 boerops_dev 的数据库结构
-DROP DATABASE IF EXISTS `boerops_dev`;
-CREATE DATABASE IF NOT EXISTS `boerops_dev` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_bin */;
-USE `boerops_dev`;
-
--- 导出  表 boerops_dev.deploys 结构
 DROP TABLE IF EXISTS `deploys`;
-CREATE TABLE IF NOT EXISTS `deploys` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `deploys` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `project_id` int(10) unsigned NOT NULL,
-  `version` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT 'commit id',
-  `mode` tinyint(1) unsigned DEFAULT '0' COMMENT '0-test;1-prod;2-rollback',
-  `status` tinyint(1) unsigned DEFAULT '0' COMMENT '0-input;1-test;2-test_result;3-prod;4-prod_result;5release',
-  `comment` text COLLATE utf8mb4_bin COMMENT 'release note',
   `user_id` int(10) unsigned NOT NULL,
+  `version` varchar(64) COLLATE utf8mb4_bin NOT NULL COMMENT 'commit id',
+  `mode` tinyint(1) unsigned DEFAULT '0' COMMENT '0-test30; 1-test31; 2-prod; 3-rollback',
+  `status` tinyint(1) unsigned DEFAULT '0' COMMENT '0-input; 1-test; 2-test_result; 3-prod; 4-prod_result; 5release',
+  `comment` text COLLATE utf8mb4_bin COMMENT 'release note',
+  `result` tinyint(1) unsigned DEFAULT NULL COMMENT '0-success; 1-failed',
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='发布部署';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 数据导出被取消选择。
--- 导出  表 boerops_dev.hosts 结构
+--
+-- Table structure for table `hosts`
+--
+
 DROP TABLE IF EXISTS `hosts`;
-CREATE TABLE IF NOT EXISTS `hosts` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `hosts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `hostname` varchar(32) COLLATE utf8mb4_bin NOT NULL,
   `ip_address` varchar(32) COLLATE utf8mb4_bin NOT NULL,
@@ -48,12 +57,17 @@ CREATE TABLE IF NOT EXISTS `hosts` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `ip_address` (`ip_address`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='主机资产表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='主机资产表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 数据导出被取消选择。
--- 导出  表 boerops_dev.projects 结构
+--
+-- Table structure for table `projects`
+--
+
 DROP TABLE IF EXISTS `projects`;
-CREATE TABLE IF NOT EXISTS `projects` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projects` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(64) COLLATE utf8mb4_bin NOT NULL,
   `repo_url` varchar(128) COLLATE utf8mb4_bin NOT NULL COMMENT 'git repo url',
@@ -65,41 +79,56 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='项目信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='项目信息表';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 数据导出被取消选择。
--- 导出  表 boerops_dev.rel_host_project 结构
+--
+-- Table structure for table `rel_host_project`
+--
+
 DROP TABLE IF EXISTS `rel_host_project`;
-CREATE TABLE IF NOT EXISTS `rel_host_project` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rel_host_project` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `host_id` int(10) unsigned NOT NULL,
   `project_id` int(10) unsigned NOT NULL,
   `created_at` datetime NOT NULL COMMENT 'create time',
   `updated_at` datetime NOT NULL COMMENT 'update time',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='主机、项目关联';
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='主机、项目关联';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 数据导出被取消选择。
--- 导出  表 boerops_dev.roles 结构
+--
+-- Table structure for table `roles`
+--
+
 DROP TABLE IF EXISTS `roles`;
-CREATE TABLE IF NOT EXISTS `roles` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `roles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(32) COLLATE utf8mb4_bin NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户角色';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户角色';
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- 数据导出被取消选择。
--- 导出  表 boerops_dev.users 结构
+--
+-- Table structure for table `users`
+--
+
 DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `username` varchar(64) COLLATE utf8mb4_bin NOT NULL,
   `password_hash` varchar(128) COLLATE utf8mb4_bin NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '姓名',
-  `job` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL COMMENT '职位',
+  `role_id` int(10) unsigned NOT NULL,
   `email` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL,
   `phone` varchar(16) COLLATE utf8mb4_bin DEFAULT NULL,
   `apikey` varchar(64) COLLATE utf8mb4_bin DEFAULT NULL,
@@ -107,9 +136,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `updated_at` datetime NOT NULL COMMENT 'update time',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户信息';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='用户信息';
+/*!40101 SET character_set_client = @saved_cs_client */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
--- 数据导出被取消选择。
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2017-06-28 18:27:38
