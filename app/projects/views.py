@@ -9,7 +9,7 @@ from app.services.projects import projs
 from app.services.hosts import hosts
 from app.services.deploys import deploys
 
-from flask import render_template, request, jsonify, current_app
+from flask import render_template, request, jsonify, current_app, g
 
 import os
 
@@ -45,7 +45,7 @@ def index():
             try:
                 projs.update(proj, **fields)
             except Exception as e:
-                return jsonify(code=500, msg='修改失败')     
+                return jsonify(code=500, msg='修改失败')
             return jsonify(code=200, msg='修改成功')
         # 添加操作
         try:
@@ -72,7 +72,7 @@ def project_hosts():
             try:
                 hosts.update(host, **request.form.to_dict())
             except Exception as e:
-                return jsonify(code=500, msg='修改失败')     
+                return jsonify(code=500, msg='修改失败')
             return jsonify(code=200, msg='修改成功')
         # 添加操作
         try:
@@ -92,17 +92,32 @@ def deploy_step_first():
         fields = request.form.to_dict()
         project_name = fields.get('name')
         version = fields.get('version')
-        environ = fields.get('environ')        
+        environ = fields.get('environ')
         proj = projs.first(name=project_name.strip())
         if not proj:
             return jsonify(rc=400, msg='项目不存在')
-        status = 1
-        if environ == 2:
-            deploys.create(project_id=proj.id, user_id=g.user.id, version=version, mode=environ, status=3)
-            status = 4
-        deploys.create(project_id=proj.id, user_id=g.user.id, version=version, mode=environ)
-        results = deploys.deploy_task(proj.id)
-        return jsonify(code=200, msg='job done', status=status)
+        if int(environ) == 2:
+            num_deploy = deploys.count(project_id=proj.id, status=3)            
+            if int(num_deploy) >= 1:
+                return jsonify(code=500, msg='有其他任务在上线中...')
+            deploys.create(
+                project_id=proj.id,
+                user_id=g.user.id,
+                version=version,
+                mode=environ,
+                status=3)
+        else:
+            num_deploy = deploys.count(project_id=proj.id, status=0)
+            if int(num_deploy) >= 1:
+                return jsonify(code=500, msg='有其他任务在提测中...')
+            deploys.create(
+                project_id=proj.id,
+                user_id=g.user.id,
+                version=version,
+                mode=environ)
+        results = deploys.deploy_task(proj.id, int(environ))
+        print(results)
+        return jsonify(code=200, msg='job done', status=results)
     return render_template('projects/deploy.html')
 
 

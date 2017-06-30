@@ -25,6 +25,11 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
 
     // 执行绑定
     form.on('submit(deployTest)', function(data) {
+        if (data.field.environ == 2) {
+            activate(5);
+        } else {
+            activate(2);
+        }
         layer.closeAll();
         layer.load();
         // layer.msg(JSON.stringify(data.field));
@@ -44,10 +49,12 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
                         anim: 0,
                         shade: [0.6, '#c2c2c2']
                     },
-                    function () {
-                        location.href="/projects/deploy";
-                    });
-
+                    // function () {
+                    //     location.href="/projects/deploy";
+                    // }
+                    // activate(data.status)
+                    activate(6),
+                    );
                 } else {
                     layer.msg(data.msg, {
                         icon: 2,
@@ -60,8 +67,7 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
         });
         return false;
     });
-
-    (function() {
+    (function () {
         var $point_arr, $points, $progress, $trigger, activate, active, max, tracker, val;
 
         $trigger = $('.trigger').first();
@@ -87,21 +93,21 @@ layui.use(['element', 'layer', 'util', 'form', 'layedit', 'laypage'], function (
                 return $progress.css('width', (index / max * 100) + "%");
             }
         };
+        window.activate = activate;
 
-        $points.on('click', 'li', function(event) {
-            var _index;
-            _index = $point_arr.index(this);
-            tracker = _index === 0 ? 1 : _index === val ? 0 : tracker;
-            return activate(_index);
-        });
+        // $points.on('click', 'li', function(event) {
+        //     var _index;
+        //     _index = $point_arr.index(this);
+        //     tracker = _index === 0 ? 1 : _index === val ? 0 : tracker;
+        //     return activate(_index);
+        // });
 
-        $trigger.on('click', function() {
-            return activate(tracker++ % 2 === 0 ? 0 : val);
-        });
+        // $trigger.on('click', function() {
+        //     return activate(tracker++ % 2 === 0 ? 0 : val);
+        // });
 
         setTimeout((function() {
             return activate(val);
         }), 1000);
-
     }).call(this);
 });

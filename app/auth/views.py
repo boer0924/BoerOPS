@@ -41,7 +41,7 @@ def login():
 
 @auth.route('/users', methods=['GET', 'POST'])
 @login_required
-@permission_required(5)
+@permission_required(3)
 def user():
     if request.method == 'POST':
         users.create(**request.form.to_dict())
@@ -53,7 +53,7 @@ def user():
 
 @auth.route('/groups', methods=['GET', 'POST'])
 @login_required
-@permission_required(5)
+@permission_required(3, alls=True)
 def group():
     if request.method == 'POST':
         roles.create(**request.form.to_dict())

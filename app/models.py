@@ -113,7 +113,7 @@ class Deploy(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     version = db.Column(db.String(64))
     mode = db.Column(db.Integer)
-    status = db.Column(db.Integer)
+    status = db.Column(db.Integer, default=0)
     comment = db.Column(db.Text)
     result = db.Column(db.Integer)
     created_at = db.Column(db.DateTime, default=db.func.now())
