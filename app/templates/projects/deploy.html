@@ -35,16 +35,56 @@
         </div>
     </form>
 </div>
+<div class="layui-tab-item" id="results-ctx">
+  <form class="layui-form boer-layer-form" method="post">
+    <div class="layui-form-item boer-layer-item">
+      <label class="layui-form-label">是否通过</label>
+      <div class="layui-input-block">
+        <input type="checkbox" name="result" lay-skin="switch">
+      </div>
+    </div>
+    <div class="layui-form-item boer-layer-item">
+      <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="testResult">提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+      </div>
+    </div> 
+  </form>
+</div>
+<div class="layui-tab-item" id="verify-results-ctx">
+  <form class="layui-form boer-layer-form" method="post">
+    <div class="layui-form-item boer-layer-item">
+      <label class="layui-form-label">是否通过</label>
+      <div class="layui-input-block">
+        <input type="checkbox" name="result" lay-skin="switch">
+      </div>
+    </div>
+    <div class="layui-form-item boer-layer-item">
+      <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="verifyResult">提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+      </div>
+    </div> 
+  </form>
+</div>
+<div class="layui-tab-item" id="release-ctx">
+  <form class="layui-form boer-layer-form" method="post">
+    <div class="layui-form-item boer-layer-item">
+      <label class="layui-form-label">版本概述</label>      
+      <div class="layui-input-block">
+        <textarea name="release" placeholder="版本概述" class="layui-textarea"></textarea>
+      </div>
+    </div>
+    <div class="layui-form-item boer-layer-item">
+      <div class="layui-input-block">
+        <button class="layui-btn" lay-submit lay-filter="releaseVersion">提交</button>
+        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+      </div>
+    </div> 
+  </form>
+</div>
 {% endblock %}
 {% block content %}
-<div style="width:70%; height:120px; margin:0 auto;margin-top:60px;">
-  <!--<button id="deploy-info-btn" class="layui-btn layui-btn-normal"><i class="layui-icon">&#xe642;</i> 填写信息</button>-->
-  <!--<button class="layui-btn layui-btn-radius">30提测成功</button>-->
-  <div style="display:inline-block">
-    <button class="layui-btn layui-btn-radius">测试通过</button>    
-    <button class="layui-btn layui-btn-danger layui-btn-radius">测试未通过</button>    
-  </div>
-</div>
 <div class="inliner"></div>
 <div class="inlined">
   <div class="progress-meter">
@@ -58,15 +98,15 @@
       <li class="progress-point" data-point="2">
         <span class="label">提测是否冲突</span>
       </li>
-      <li class="progress-point" data-point="3">
+      <li id="test-result-btn" class="progress-point" data-point="3">
         <span class="label">测试</span>
       </li>
       <li class="progress-point" data-point="4">
         <span class="label">上线是否冲突</span></li>
-      <li class="progress-point" data-point="5">
+      <li id="verify-result-btn" class="progress-point" data-point="5">
         <span class="label">验证</span>
       </li>
-      <li class="progress-point" data-point="6">
+      <li id="release-version-btn" class="progress-point" data-point="6">
         <span class="label">发布版本</span>
       </li>
       <li class="progress-point" data-point="7">
